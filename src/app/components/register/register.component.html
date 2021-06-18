@@ -1,0 +1,56 @@
+<div class="container mb-5 mt-5">
+    <div class="d-flex justify-content-center h-50">
+        <div class="user_card">
+          <div class="d-flex justify-content-center">
+            <div style="margin-top: 10px;margin-bottom:-90px;">
+                <h3>Restaurant Voting System</h3>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center form_container">
+            <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm.value)">
+              <div class="input-group mb-3">
+                <div class="input-group-append">
+                  <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                </div>
+                <input type="text" class="form-control" name="name" placeholder="Username" required ngModel #nameInput="ngModel">
+              </div>
+              <span class="help-block" *ngIf="nameInput.invalid && nameInput.touched" style="color:red;">Please enter a username</span>
+              <div class="input-group mb-3">
+                <div class="input-group-append">
+                  <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                </div>
+                <input type="text" class="form-control" name="email" placeholder="Email" required ngModel #emailInput="ngModel">
+              </div>
+              <span class="help-block" *ngIf="emailInput.invalid && emailInput.touched" style="color:red;">Please enter an email.</span>
+              <div class="input-group mb-3">
+                <div class="input-group-append">
+                  <span class="input-group-text"><i class="fas fa-key"></i></span>
+                </div>
+                <input type="password" class="form-control" name="password" placeholder="Password" required ngModel #passwordInput="ngModel">
+              </div>
+              <span class="help-block" *ngIf="passwordInput.invalid && passwordInput.touched" style="color:red;">Please enter a password</span>
+              <div class="input-group mb-3">
+                <div class="input-group-append">
+                  <span class="input-group-text"><i class="fas fa-key"></i></span>
+                </div>
+                <input type="password" class="form-control" name="repeatPassword" placeholder="Repeat Password" required ngModel #repeatPasswordInput="ngModel">
+              </div>
+              <span class="help-block" *ngIf="repeatPasswordInput.invalid && repeatPasswordInput.touched" style="color:red;">Please repeat a password</span>
+              <span class="help-block" *ngIf="(passwordInput.value != repeatPasswordInput.value) && (repeatPasswordInput.value != '')" style="color:red;">Passwords do not match</span>
+          <div class="d-flex justify-content-center mt-3 login_container">
+            <button [disabled]="registerForm.invalid || showLoading" type="submit" name="button" class="btn login_btn">
+              <i *ngIf="showLoading" class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;
+              <span *ngIf="showLoading">Loading...</span>
+              <span *ngIf="!showLoading">Register</span>
+            </button>
+          </div>
+        </form>
+      </div>
+          <div class="mt-4">
+            <div class="d-flex justify-content-center links">
+              Already have an account? <a routerLink="/login"  class="ml-2" style="color: #2C3E50;">Log In</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
