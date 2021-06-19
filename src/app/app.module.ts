@@ -27,6 +27,8 @@ import { SearchComponent } from './components/search/search.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AdminGuard } from './guards/admin.guard';
+import { UserListComponent } from './components/user-list/user-list.component';
+import { AlbumListComponent } from './components/album-list/album-list.component';
 
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent},
@@ -35,7 +37,8 @@ const routes: Routes = [
   {path: 'restaurant-form', component: RestaurantFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'restaurants/:id', component: RestaurantDetailsComponent},
   {path: 'search/:keyword', component: RestaurantListComponent},
-  {path: 'restaurants', component: RestaurantListComponent},
+  {path: 'albums', component: AlbumListComponent},
+  {path: 'users', component: UserListComponent},
   {path: '', redirectTo: '/albums', pathMatch: 'full'},
   {path: '**', redirectTo: '/albums', pathMatch: 'full'}
 ];
@@ -52,7 +55,9 @@ const routes: Routes = [
     RegisterComponent,
     HeaderComponent,
     FooterComponent,
-    ProfileComponent
+    ProfileComponent,
+    UserListComponent,
+    AlbumListComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

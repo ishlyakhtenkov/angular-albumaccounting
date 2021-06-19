@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.authenticationService.isLoggedIn()) {
-      this.router.navigateByUrl('/restaurants');
+      this.router.navigateByUrl('/albums');
     } else {
       // this.router.navigateByUrl('/login');
       this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -36,8 +36,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.authenticationService.login(email, password).subscribe(
         (response: HttpResponse<User>) => {
-          const authData = window.btoa(email + ':' + password);
-          this.authenticationService.saveToken(authData);
+          const token = response.headers.get('Authorization-Token');
+          this.authenticationService.saveToken(token);
           this.authenticationService.addUserToLocalCache(response.body);
           this.router.navigateByUrl(this.returnUrl);
           this.showLoading = false;
