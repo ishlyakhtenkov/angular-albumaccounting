@@ -58,7 +58,7 @@ export class ProfileComponent implements OnInit {
     this.router.navigateByUrl("/restaurants");
   }
 
-  deleteProfile(): void {
+  changePassword(): void {
     if (+this.user.id == 100000 || +this.user.id == 100001) {
       this.notificationService.sendNotification(NotificationType.ERROR, `Test profile cannot be deleted!`);
     } else {

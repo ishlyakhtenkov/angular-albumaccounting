@@ -1,9 +1,23 @@
-<div class="navbar navbar-dark bg-dark box-shadow">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark box-shadow">
     <div class="container">
-        <a href="#" class="navbar-brand">
+        <a href="#" class="navbar-brand font-weight-bold">
             <img src="assets/images/albums.png" width="30" height="30" class="d-inline-block align-top" alt="">
-            <strong> Album Accounting System</strong>
+            Album Accounting System
         </a>
+
+        <ul class="navbar-nav mr-auto">
+			<li class="nav-item">
+				<a class="nav-link" routerLink="/users">
+					Users <i class="fas fa-angle-down" id="collapsed-chevron"></i>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onclick="rotateIcon(); closeImgModal(); goTop()">
+					Albums <i class="fas fa-angle-down" id="collapsed-chevron"></i>
+				</a>
+			</li>
+		</ul>
+
         <a *ngIf="isUserLoggedIn()" routerLink="/profile" class="btn btn-sm btn-outline-secondary">
             <span>Profile</span>
             <i class="fas fa-user-alt ml-1"></i>
@@ -13,4 +27,4 @@
             <i class="fas fa-sign-in-alt ml-1"></i>
         </a>
     </div>
-</div>
+</nav>
