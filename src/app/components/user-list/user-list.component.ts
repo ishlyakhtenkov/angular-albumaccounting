@@ -105,7 +105,7 @@ export class UserListComponent implements OnInit {
         name: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
         email: new FormControl('', [Validators.required, Validators.email]),
         enabled: [true],
-        roles: new FormControl([], [Validators.required]),
+        roles: new FormControl('', [Validators.required]),
         password: new FormControl('', [Validators.required, Validators.minLength(5), CustomValidators.notOnlyWhitespace]),
         repeatPassword: new FormControl('', [Validators.required])
       }, {validator: this.checkIfMatchingPasswords('password', 'repeatPassword')})
@@ -156,7 +156,7 @@ export class UserListComponent implements OnInit {
         nameEdited: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
         emailEdited: new FormControl('', [Validators.required, Validators.email]),
         enabledEdited: [true],
-        rolesEdited: new FormControl([], [Validators.required])
+        rolesEdited: new FormControl('', [Validators.required])
       })
     });
   }
@@ -168,7 +168,7 @@ export class UserListComponent implements OnInit {
         nameEdited: new FormControl(user.name, [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
         emailEdited: new FormControl(user.email, [Validators.required, Validators.email]),
         enabledEdited: [user.enabled],
-        rolesEdited: new FormControl([user.roles], [Validators.required])
+        rolesEdited: new FormControl(user.roles, [Validators.required])
       })
     });
   }
