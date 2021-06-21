@@ -22,7 +22,7 @@
                                                         [(ngModel)]="user.enabled"
                                                         class="custom-control-input">
                                                     <label
-                                                        class="custom-control-label">Enabled</label></small>
+                                                        class="custom-control-label">Active</label></small>
                                                 </div>
                                             </div>
                                         </div>
@@ -55,27 +55,6 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <div class="form-group">
-                                                                    <label>Password</label>
-                                                                    <input type="password" name="password" required
-                                                                    ngModel #passwordInput="ngModel" class="form-control">
-                                                                    <span class="help-block" *ngIf="passwordInput.invalid && passwordInput.touched" style="color:red;">Please enter a password</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <div class="form-group">
-                                                                    <label>Repeat Password</label>
-                                                                    <input type="password" name="repeatPassword" required
-                                                                    ngModel #repeatPasswordInput="ngModel" class="form-control">
-                                                                    <span class="help-block" *ngIf="repeatPasswordInput.invalid && repeatPasswordInput.touched" style="color:red;">Please repeat a password</span>
-                                                                    <span class="help-block" *ngIf="(passwordInput.value != repeatPasswordInput.value) && (repeatPasswordInput.value != '')" style="color:red;">Passwords do not match</span>                                                      
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -83,9 +62,6 @@
                                                         <a (click)="back()" class="btn btn-secondary mr-1">
                                                             Close
                                                         </a>
-                                                        <button [disabled]="profileUserForm.invalid || passwordInput.value != repeatPasswordInput.value" class="btn btn-primary" type="submit">
-                                                            Save
-                                                        </button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -111,7 +87,7 @@
                                 <div class="px-xl-3">
                                     <button (click)="changePassword()"  class="btn btn-block btn-danger">
                                         <span>Change Password</span>
-                                        <i class="fas fa-user-slash ml-1"></i>
+                                        <i class="fas fa-key ml-1"></i>
                                     </button>
                                 </div>
                             </div>

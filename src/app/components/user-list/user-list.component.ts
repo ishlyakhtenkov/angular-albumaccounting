@@ -139,7 +139,7 @@ export class UserListComponent implements OnInit {
       this.userService.createUser(newUser).subscribe(
         (response: User) => {
           document.getElementById("user-add-modal-close").click();
-          this.notificationService.sendNotification(NotificationType.SUCCESS, `A new user ${response.email} was created`);
+          this.notificationService.sendNotification(NotificationType.SUCCESS, `A new user '${response.name}' was created`);
           this.listUsers();
         },
         (errorResponse: HttpErrorResponse) => {
@@ -185,7 +185,7 @@ export class UserListComponent implements OnInit {
       this.userService.updateUser(updatedUserTo).subscribe(
         response => {
           document.getElementById("user-edit-modal-close").click();
-          this.notificationService.sendNotification(NotificationType.SUCCESS, `The user ${updatedUserTo.email} was updated`);
+          this.notificationService.sendNotification(NotificationType.SUCCESS, `The user '${updatedUserTo.name}' was updated`);
           this.listUsers();
         },
         (errorResponse: HttpErrorResponse) => {
@@ -196,10 +196,10 @@ export class UserListComponent implements OnInit {
     }
   }
 
-  deleteUser(id: number) {
+  deleteUser(id: number, name: string) {
     this.userService.deleteUser(id).subscribe(
       response => {
-        this.notificationService.sendNotification(NotificationType.SUCCESS, `The user with id=${id} was deleted`);
+        this.notificationService.sendNotification(NotificationType.SUCCESS, `The user '${name}' was deleted`);
         this.listUsers();
       },
       (errorResponse: HttpErrorResponse) => {
@@ -240,7 +240,7 @@ export class UserListComponent implements OnInit {
       this.userService.changeUserPassword(userId, newPassword).subscribe(
         response => {
           document.getElementById("change-password-modal-close").click();
-          this.notificationService.sendNotification(NotificationType.SUCCESS, `Password was updated`);
+          this.notificationService.sendNotification(NotificationType.SUCCESS, `Password for ${this.nameEdited.value} was updated`);
         },
         (errorResponse: HttpErrorResponse) => {
           this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
