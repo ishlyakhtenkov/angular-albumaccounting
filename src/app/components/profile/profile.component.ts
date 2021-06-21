@@ -35,21 +35,21 @@ export class ProfileComponent implements OnInit {
   }
 
   updateProfile(theUserTo: UserTo): void {
-    if (+this.user.id == 100000 || +this.user.id == 100001) {
-      this.notificationService.sendNotification(NotificationType.ERROR, `Test profile cannot be updated!`);
-    } else {
-      let userTo = new UserTo(this.user.id, theUserTo.name, theUserTo.email, theUserTo.password);
-    this.userService.updateUser(userTo).subscribe(
-      response => {
-        this.notificationService.sendNotification(NotificationType.SUCCESS, `The profile was updated`);
-        const authData = window.btoa(theUserTo.email + ':' + theUserTo.password);
-        this.authenticationService.saveToken(authData);
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.handleErrorResponse(errorResponse);
-      }
-    )
-    }
+    // if (+this.user.id == 100000 || +this.user.id == 100001) {
+    //   this.notificationService.sendNotification(NotificationType.ERROR, `Test profile cannot be updated!`);
+    // } else {
+    //   // let userTo = new UserTo(this.user.id, theUserTo.name, theUserTo.email, theUserTo.password);
+    // // this.userService.updateUser(userTo).subscribe(
+    //   response => {
+    //     this.notificationService.sendNotification(NotificationType.SUCCESS, `The profile was updated`);
+    //     // const authData = window.btoa(theUserTo.email + ':' + theUserTo.password);
+    //     // this.authenticationService.saveToken(authData);
+    //   },
+    //   (errorResponse: HttpErrorResponse) => {
+    //     this.handleErrorResponse(errorResponse);
+    //   }
+    // )
+    // }
   }
 
   logOut(): void {

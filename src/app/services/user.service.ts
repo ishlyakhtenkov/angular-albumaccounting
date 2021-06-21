@@ -22,6 +22,10 @@ export class UserService {
     return this.httpClient.get<User[]>(this.baseUrl);
   }
 
+  searchUsers(keyWord: string) {
+    return this.httpClient.get<User[]>(`${this.baseUrl}/by?keyWord=${keyWord}`);
+  }
+
   createUser(user: User): Observable<User> {
     return this.httpClient.post<User>(this.baseUrl, user);
   }

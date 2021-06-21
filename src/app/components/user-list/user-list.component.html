@@ -5,13 +5,14 @@
         </div>
         <div class="col-6 text-right">
             <div class="btn-group">
-                <form class="form-inline my-2 my-lg-0 justify-content-center">
-                  <input name="searchTerm" class="form-control mr-sm-2"  type="search" placeholder="Search users...">
-               </form>
+                <div class="form-inline">
+                    <input #myInput type="text" placeholder="Search users..." class="form-control mr-sm-2"
+                        (keyup.enter)="searchUsers(myInput.value)">
+                </div>
                 <button type="button" (click)="makeUserAddFormGroup()" class="btn btn-info" data-toggle="modal" data-target="#addUserModal">
                   <i class="fa fa-plus"></i>New User
                 </button>
-              </div>
+            </div>
         </div>
     </div>
     <table *ngIf="users?.length > 0" class="table">
@@ -36,8 +37,10 @@
                 </td>
                 <td class="align-middle">{{ tempUser.registered | date:'mediumDate' }}</td>
                 <td class="align-middle">
-                    <button type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt" aria-hidden="true"></i></button>            
-                    <button class="btn btn-danger btn-sm ml-1"><i class="fa fa-minus" aria-hidden="true"></i></button>     
+                    <button type="button" (click)="editUser(tempUser)" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editUserModal">
+                        <i class="fa fa-pencil-alt" aria-hidden="true"></i>
+                    </button>      
+                    <button type="button" (click)="deleteUser(tempUser.id)" class="btn btn-danger btn-sm ml-1"><i class="fa fa-minus" aria-hidden="true"></i></button>     
                 </td>
             </tr>
         </tbody>
@@ -51,7 +54,7 @@
     </div>
 </div>
 
-<!-- User Modal Form -->
+<!-- User Add Modal Form -->
 <div class="modal draggable fade bd-example-modal-lg" id="addUserModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -64,18 +67,17 @@
             </div>
             <div class="modal-body text-left">
                 <div>
-                    <form [formGroup]="userAddFormGroup" (ngSubmit)="onSubmit()">
+                    <form [formGroup]="userAddFormGroup" (ngSubmit)="onAddNewUser()">
                         <div formGroupName="user" class="text-left">
-
                             <div class="form-group">
                                 <label for="name">User Name</label>
                                 <input formControlName="name" type="text" class="form-control" placeholder="User name">
                                 <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger mt-1">
                                     <div *ngIf="name.errors.required || name.errors.notOnlyWhitespace">
-                                        User Name is required
+                                        Name is required
                                     </div>
                                     <div *ngIf="name.errors.minlength">
-                                        User Name must be at least 2 characters long
+                                        Name must be at least 2 characters long
                                     </div>
                                 </div>
                             </div>
@@ -94,12 +96,39 @@
                             <div class="form-group">
                                 <label for="roles">User Roles</label>
                                 <select multiple formControlName="roles" class="form-control">
-                                    <option value="ROLE_ADMIN">ADMIN</option>
-                                    <option value="ROLE_ARCHIVE_WORKER">ARCHIVE_WORKER</option>
+                                    <option value="ADMIN">ADMIN</option>
+                                    <option value="ARCHIVE_WORKER">ARCHIVE_WORKER</option>
                                 </select>
                                 <div *ngIf="roles.invalid && (roles.dirty || roles.touched)" class="alert alert-danger mt-1">
                                     <div *ngIf="roles.errors.required">
                                         At least one role is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">User Password</label>
+                                <input formControlName="password" type="password" class="form-control" placeholder="User password">
+                                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="password.errors.required || password.errors.notOnlyWhitespace">
+                                        Password is required
+                                    </div>
+                                    <div *ngIf="password.errors.minlength">
+                                        Password must be at least 5 characters long
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="repeatPassword">Repeat Password</label>
+                                <input formControlName="repeatPassword" type="password" class="form-control" placeholder="Repeat password">
+                                <div *ngIf="repeatPassword.invalid && (repeatPassword.dirty || repeatPassword.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="repeatPassword.errors.required || repeatPassword.errors.notOnlyWhitespace">
+                                        Password is required
+                                    </div>
+                                    <div *ngIf="repeatPassword.errors.minlength">
+                                        Password must be at least 5 characters long
+                                    </div>
+                                    <div *ngIf="repeatPassword.errors.notEquivalent">
+                                        Passwords do not match
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +140,6 @@
                                     </label>
                                 </div>
                             </div>
-
                         </div>
                         <button type="submit" class="btn btn-info btn-block">Save</button>
                     </form>
@@ -119,6 +147,140 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" id="user-add-modal-close" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Edit Modal Form -->
+<div class="modal draggable fade bd-example-modal-lg" id="editUserModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center">Edit User: {{ nameEdited.value }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-left">
+                <div>
+                    <form [formGroup]="userEditFormGroup" (ngSubmit)="onUpdateUser()">
+                        <div formGroupName="user" class="text-left">
+                            <div class="form-group">
+                                <input formControlName="id" type="hidden">
+                            </div>
+                            <div class="form-group">
+                                <label for="nameEdited">User Name</label>
+                                <input formControlName="nameEdited" type="text" class="form-control" placeholder="User name">
+                                <div *ngIf="nameEdited.invalid && (nameEdited.dirty || nameEdited.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="nameEdited.errors.required || nameEdited.errors.notOnlyWhitespace">
+                                        Name is required
+                                    </div>
+                                    <div *ngIf="nameEdited.errors.minlength">
+                                        Name must be at least 2 characters long
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="emailEdited">User email</label>
+                                <input formControlName="emailEdited" type="email" class="form-control" placeholder="User email">
+                                <div *ngIf="emailEdited.invalid && (emailEdited.dirty || emailEdited.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="emailEdited.errors.required">
+                                        Email is required
+                                    </div>
+                                    <div *ngIf="emailEdited.errors.email">
+                                        Must be email
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="rolesEdited">User Roles</label>
+                                <select multiple formControlName="rolesEdited" class="form-control">
+                                    <option value="ADMIN">ADMIN</option>
+                                    <option value="ARCHIVE_WORKER">ARCHIVE_WORKER</option>
+                                </select>
+                                <div *ngIf="rolesEdited.invalid && (rolesEdited.dirty || rolesEdited.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="rolesEdited.errors.required">
+                                        At least one role is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                      <input type="checkbox" formControlName="enabledEdited" class="form-check-input" >
+                                      Active
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-info btn-block">Save</button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="editPassword(id.value)" class="btn btn-warning" data-toggle="modal" data-target="#changePasswordModal">
+                    Change password
+                </button>      
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="user-edit-modal-close" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Password Modal Form -->
+<div class="modal draggable fade bd-example-modal-lg" id="changePasswordModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center">Change Password for {{ nameEdited.value }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-left">
+                <div>
+                    <form [formGroup]="changePasswordFormGroup" (ngSubmit)="onChangePassword()">
+                        <div formGroupName="changedPassword" class="text-left">
+                            <div class="form-group">
+                                <input formControlName="changePasswordId" type="hidden">
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">New Password</label>
+                                <input formControlName="newPassword" type="password" class="form-control" placeholder="New password">
+                                <div *ngIf="newPassword.invalid && (newPassword.dirty || newPassword.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="newPassword.errors.required || newPassword.errors.notOnlyWhitespace">
+                                        Password is required
+                                    </div>
+                                    <div *ngIf="newPassword.errors.minlength">
+                                        Password must be at least 5 characters long
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="repeatNewPassword">Repeat Password</label>
+                                <input formControlName="repeatNewPassword" type="password" class="form-control" placeholder="Repeat new password">
+                                <div *ngIf="repeatNewPassword.invalid && (repeatNewPassword.dirty || repeatNewPassword.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="repeatNewPassword.errors.required || repeatNewPassword.errors.notOnlyWhitespace">
+                                        Password is required
+                                    </div>
+                                    <div *ngIf="repeatNewPassword.errors.minlength">
+                                        Password must be at least 5 characters long
+                                    </div>
+                                    <div *ngIf="repeatNewPassword.errors.notEquivalent">
+                                        Passwords do not match
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-danger btn-block">Change Password</button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="change-password-modal-close" >Close</button>
             </div>
         </div>
     </div>

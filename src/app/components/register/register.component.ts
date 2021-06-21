@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   onRegister(registerTo: UserTo): void {
-    let userTo = new UserTo(registerTo.id, registerTo.name, registerTo.email, registerTo.password);
+    // let userTo = new UserTo(registerTo.id, registerTo.name, registerTo.email, registerTo.password);
     this.showLoading = true;
     // this.subscriptions.push(
     //   this.authenticationService.register(userTo).subscribe(
