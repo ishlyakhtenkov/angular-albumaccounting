@@ -32,6 +32,7 @@ import { DepartmentService } from './services/department.service';
 import { DepartmentComponent } from './components/department/department.component';
 import { AlbumComponent } from './components/album/album.component';
 import { UserComponent } from './components/user/user.component';
+import { EmployeeService } from './services/employee.service';
 
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthenticationGuard]},
@@ -74,7 +75,7 @@ const routes: Routes = [
     FormsModule
   ],
   providers: [RestaurantService, AuthenticationService, UserService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, 
-    AuthenticationGuard, AdminGuard, NotificationService, MenuService, VoteService, ProfileService, DepartmentService],
+    AuthenticationGuard, AdminGuard, NotificationService, MenuService, VoteService, ProfileService, DepartmentService, EmployeeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
