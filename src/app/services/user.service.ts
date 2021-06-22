@@ -14,8 +14,8 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getUser(userId: number): Observable<User>{
-    return this.httpClient.get<User>(`${this.usersUrl}/${userId}`);
+  getUser(id: number): Observable<User>{
+    return this.httpClient.get<User>(`${this.usersUrl}/${id}`);
   }
 
   getUserList(): Observable<User[]> {
@@ -34,17 +34,17 @@ export class UserService {
     return this.httpClient.put<any>(`${this.usersUrl}/${userTo.id}`, userTo);
   }
 
-  deleteUser(userId: number): Observable<any> {
-    return this.httpClient.delete<any>(`${this.usersUrl}/${userId}`);
+  deleteUser(id: number): Observable<any> {
+    return this.httpClient.delete<any>(`${this.usersUrl}/${id}`);
   }
 
-  enableUser(userId: number, enabled: boolean): Observable<any> {
+  enableUser(id: number, enabled: boolean): Observable<any> {
     const enabledQueryParam = `?enabled=${enabled}`;
-    return this.httpClient.patch<any>(`${this.usersUrl}/${userId}${enabledQueryParam}`, {});
+    return this.httpClient.patch<any>(`${this.usersUrl}/${id}${enabledQueryParam}`, {});
   }
 
-  changeUserPassword(userId: number, password: string): Observable<any> {
-    const passwordQueryParam = `?password=${password}`;
-    return this.httpClient.patch<any>(`${this.usersUrl}/${userId}/password${passwordQueryParam}`, {});
+  changeUserPassword(id: number, newPassword: string): Observable<any> {
+    const passwordQueryParam = `?password=${newPassword}`;
+    return this.httpClient.patch<any>(`${this.usersUrl}/${id}/password${passwordQueryParam}`, {});
   }
 }
