@@ -14,7 +14,7 @@
                                             <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{profile?.name}}</h4>
                                         </div>
                                         <div class="text-center text-sm-right">
-                                            <div class="text-muted"><small>Joined {{profile?.registered |
+                                            <div class="text-muted"><small>Registered: {{profile?.registered |
                                                     date:'mediumDate'}}</small></div>
                                             <div class="text-muted"><small>Roles: {{ profile?.roles.join(', ')
                                                     }}</small></div>
@@ -53,13 +53,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col d-flex justify-content-end">
-                                                    <a (click)="back()" class="btn btn-secondary mr-1">
-                                                        Close
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -85,6 +78,16 @@
                                     data-target="#changePasswordModal">
                                     <span>Change password</span>
                                     <i class="fas fa-key ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="px-xl-3">
+                                <button (click)="back()" class="btn btn-block btn-light">
+                                    <span>Close</span>
+                                    <i class="fas fa-times ml-1"></i>
                                 </button>
                             </div>
                         </div>
