@@ -29,6 +29,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { AdminGuard } from './guards/admin.guard';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { AlbumListComponent } from './components/album-list/album-list.component';
+import { ProfileService } from './services/profile.service';
 
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthenticationGuard]},
@@ -69,7 +70,7 @@ const routes: Routes = [
     FormsModule
   ],
   providers: [RestaurantService, AuthenticationService, UserService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, 
-    AuthenticationGuard, AdminGuard, NotificationService, MenuService, VoteService],
+    AuthenticationGuard, AdminGuard, NotificationService, MenuService, VoteService, ProfileService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

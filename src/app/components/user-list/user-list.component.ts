@@ -178,7 +178,11 @@ export class UserListComponent implements OnInit {
     if (this.userEditFormGroup.invalid) {
       this.userEditFormGroup.markAllAsTouched();
     } else {
-      let updatedUserTo = new UserTo(this.userEditFormGroup.get('user.id').value, this.userEditFormGroup.get('user.nameEdited').value, 
+      let id = this.userEditFormGroup.get('user.id').value;
+      if (id == 100000 || id == 100001) {
+        this.notificationService.sendNotification(NotificationType.ERROR, `Test user cannot be updated!`);
+      } else {
+        let updatedUserTo = new UserTo(this.userEditFormGroup.get('user.id').value, this.userEditFormGroup.get('user.nameEdited').value, 
                       this.userEditFormGroup.get('user.emailEdited').value,
                       this.userEditFormGroup.get('user.enabledEdited').value, this.userEditFormGroup.get('user.rolesEdited').value);
       console.log(updatedUserTo);
@@ -191,22 +195,26 @@ export class UserListComponent implements OnInit {
         (errorResponse: HttpErrorResponse) => {
           this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
         }
-  
       );
+      }
     }
   }
 
   deleteUser(id: number, name: string) {
     if (confirm(`Are you sure want to delete user '${name}'?`)) {
-      this.userService.deleteUser(id).subscribe(
-        response => {
-          this.notificationService.sendNotification(NotificationType.SUCCESS, `The user '${name}' was deleted`);
-          this.listUsers();
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
-        }
-      );
+      if (id == 100000 || id == 100001) {
+        this.notificationService.sendNotification(NotificationType.ERROR, `Test user cannot be deleted!`);
+      } else {
+        this.userService.deleteUser(id).subscribe(
+          response => {
+            this.notificationService.sendNotification(NotificationType.SUCCESS, `The user '${name}' was deleted`);
+            this.listUsers();
+          },
+          (errorResponse: HttpErrorResponse) => {
+            this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
+          }
+        );  
+      }
     }
   }
 
@@ -235,19 +243,21 @@ export class UserListComponent implements OnInit {
     if (this.changePasswordFormGroup.invalid) {
       this.changePasswordFormGroup.markAllAsTouched();
     } else {
-      console.log(this.changePasswordFormGroup.get('changedPassword.changePasswordId').value);
-      console.log(this.changePasswordFormGroup.get('changedPassword.newPassword').value);
       let userId = this.changePasswordFormGroup.get('changedPassword.changePasswordId').value;
-      let newPassword = this.changePasswordFormGroup.get('changedPassword.newPassword').value;
-      this.userService.changeUserPassword(userId, newPassword).subscribe(
-        response => {
-          document.getElementById("change-password-modal-close").click();
-          this.notificationService.sendNotification(NotificationType.SUCCESS, `Password for ${this.nameEdited.value} was updated`);
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
-        }
-      );
+      if (+userId == 100000 || +userId == 100001) {
+        this.notificationService.sendNotification(NotificationType.ERROR, `Test user password cannot be changed!`);
+      } else {
+        let newPassword = this.changePasswordFormGroup.get('changedPassword.newPassword').value;
+        this.userService.changeUserPassword(userId, newPassword).subscribe(
+          response => {
+            document.getElementById("change-password-modal-close").click();
+            this.notificationService.sendNotification(NotificationType.SUCCESS, `Password for ${this.nameEdited.value} was updated`);
+          },
+          (errorResponse: HttpErrorResponse) => {
+            this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
+          }
+        );  
+      }
     }
   }
 }
