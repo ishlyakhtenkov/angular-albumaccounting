@@ -31,14 +31,14 @@ import { UserListComponent } from './components/user-list/user-list.component';
 import { AlbumListComponent } from './components/album-list/album-list.component';
 
 const routes: Routes = [
-  {path: 'profile', component: ProfileComponent},
+  {path: 'profile', component: ProfileComponent, canActivate: [AuthenticationGuard]},
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
   {path: 'restaurant-form', component: RestaurantFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'restaurants/:id', component: RestaurantDetailsComponent},
   {path: 'search/:keyword', component: RestaurantListComponent},
   {path: 'albums', component: AlbumListComponent},
-  {path: 'users', component: UserListComponent},
+  {path: 'users', component: UserListComponent, canActivate: [AdminGuard]},
   {path: '', redirectTo: '/albums', pathMatch: 'full'},
   {path: '**', redirectTo: '/albums', pathMatch: 'full'}
 ];

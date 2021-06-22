@@ -197,15 +197,17 @@ export class UserListComponent implements OnInit {
   }
 
   deleteUser(id: number, name: string) {
-    this.userService.deleteUser(id).subscribe(
-      response => {
-        this.notificationService.sendNotification(NotificationType.SUCCESS, `The user '${name}' was deleted`);
-        this.listUsers();
-      },
-      (errorResponse: HttpErrorResponse) => {
-        this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
-      }
-    );
+    if (confirm(`Are you sure want to delete user '${name}'?`)) {
+      this.userService.deleteUser(id).subscribe(
+        response => {
+          this.notificationService.sendNotification(NotificationType.SUCCESS, `The user '${name}' was deleted`);
+          this.listUsers();
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
+        }
+      );
+    }
   }
 
   makeChangePasswordFormGroup() {
@@ -245,9 +247,7 @@ export class UserListComponent implements OnInit {
         (errorResponse: HttpErrorResponse) => {
           this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
         }
-
       );
     }
-
   }
 }

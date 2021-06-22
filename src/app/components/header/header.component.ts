@@ -18,10 +18,13 @@ export class HeaderComponent implements OnInit {
     return this.authenticationService.isLoggedIn();
   }
 
+  isAdmin(): boolean {
+    return this.authenticationService.isAdmin();
+  }
+
   routeToLogin(): void {
     console.log(this.router.url);
     this.router.navigate([`/login`], 
               {queryParams: {returnUrl: this.router.url}});
-
   }
 }
