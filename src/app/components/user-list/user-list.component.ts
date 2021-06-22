@@ -1,9 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { User } from 'src/app/common/user';
 import { UserTo } from 'src/app/common/user-to';
-import { NotificationType } from 'src/app/enum/notification-type.enum';
+import { NotificationType } from 'src/app/enums/notification-type.enum';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { UserService } from 'src/app/services/user.service';
 import { CustomValidators } from 'src/app/validators/custom-validators';
@@ -23,11 +25,11 @@ export class UserListComponent implements OnInit {
 
   changePasswordFormGroup: FormGroup;
 
-  constructor(private userService: UserService, private notificationService: NotificationService, private formBuilder: FormBuilder) { }
+  constructor(private userService: UserService, private notificationService: NotificationService, 
+              private formBuilder: FormBuilder, private authenticationService: AuthenticationService, private router: Router) { }
 
   ngOnInit(): void {
     this.listUsers();
-
     this.makeUserAddFormGroup();
     this.makeUserEditFormGroup();
     this.makeChangePasswordFormGroup();
@@ -35,8 +37,11 @@ export class UserListComponent implements OnInit {
 
   listUsers() {
     this.userService.getUserList().subscribe(
-      data => {
-        this.users = data;
+      (response: User[]) => {
+        this.users = response;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.handleErrorResponse(errorResponse);
       }
     );
   }
@@ -45,8 +50,11 @@ export class UserListComponent implements OnInit {
     keyWord = keyWord.trim();
     if (keyWord.length > 0) {
       this.userService.searchUsers(keyWord).subscribe(
-        data => {
-          this.users = data;
+        (response: User[]) => {
+          this.users = response;
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.handleErrorResponse(errorResponse);
         }
       );
     } else {
@@ -54,7 +62,7 @@ export class UserListComponent implements OnInit {
     }
   }
 
-  // Getters for User Add FormGroup values
+  // Getters for userAddFormGroup values
   get name() {
     return this.userAddFormGroup.get('user.name');
   }
@@ -74,7 +82,7 @@ export class UserListComponent implements OnInit {
     return this.userAddFormGroup.get('user.repeatPassword');
   }
 
-  // Getters for User Edit FormGroup values
+  // Getters for userEditFormGroup values
   get id() {
     return this.userEditFormGroup.get('user.id');
   }
@@ -91,7 +99,7 @@ export class UserListComponent implements OnInit {
     return this.userEditFormGroup.get('user.rolesEdited');
   }
 
-  // Getters for Change Password FormGroup values
+  // Getters for changePasswordFormGroup values
   get newPassword() {
     return this.changePasswordFormGroup.get('changedPassword.newPassword');
   }
@@ -143,13 +151,16 @@ export class UserListComponent implements OnInit {
           this.listUsers();
         },
         (errorResponse: HttpErrorResponse) => {
-          this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
+          if (errorResponse.status == 401 || 403) {
+            document.getElementById("user-add-modal-close").click();
+          }
+          this.handleErrorResponse(errorResponse);
         }
       );
     }
   }
 
-  makeUserEditFormGroup() {
+  private makeUserEditFormGroup() {
     this.userEditFormGroup = this.formBuilder.group({
       user: this.formBuilder.group({
         id: [''],
@@ -182,10 +193,11 @@ export class UserListComponent implements OnInit {
       if (id == 100000 || id == 100001) {
         this.notificationService.sendNotification(NotificationType.ERROR, `Test user cannot be updated!`);
       } else {
-        let updatedUserTo = new UserTo(this.userEditFormGroup.get('user.id').value, this.userEditFormGroup.get('user.nameEdited').value, 
-                      this.userEditFormGroup.get('user.emailEdited').value,
-                      this.userEditFormGroup.get('user.enabledEdited').value, this.userEditFormGroup.get('user.rolesEdited').value);
-      console.log(updatedUserTo);
+        let updatedUserTo = new UserTo(this.userEditFormGroup.get('user.id').value, 
+                                       this.userEditFormGroup.get('user.nameEdited').value, 
+                                       this.userEditFormGroup.get('user.emailEdited').value,
+                                       this.userEditFormGroup.get('user.enabledEdited').value, 
+                                       this.userEditFormGroup.get('user.rolesEdited').value);
       this.userService.updateUser(updatedUserTo).subscribe(
         response => {
           document.getElementById("user-edit-modal-close").click();
@@ -193,7 +205,10 @@ export class UserListComponent implements OnInit {
           this.listUsers();
         },
         (errorResponse: HttpErrorResponse) => {
-          this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
+          if (errorResponse.status == 401 || 403) {
+            document.getElementById("user-edit-modal-close").click();
+          }
+          this.handleErrorResponse(errorResponse);
         }
       );
       }
@@ -211,14 +226,14 @@ export class UserListComponent implements OnInit {
             this.listUsers();
           },
           (errorResponse: HttpErrorResponse) => {
-            this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
+            this.handleErrorResponse(errorResponse);
           }
         );  
       }
     }
   }
 
-  makeChangePasswordFormGroup() {
+  private makeChangePasswordFormGroup() {
     this.changePasswordFormGroup = this.formBuilder.group({
       changedPassword: this.formBuilder.group({
         changePasswordId: [''],
@@ -254,10 +269,23 @@ export class UserListComponent implements OnInit {
             this.notificationService.sendNotification(NotificationType.SUCCESS, `Password for ${this.nameEdited.value} was updated`);
           },
           (errorResponse: HttpErrorResponse) => {
-            this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
+            if (errorResponse.status == 401 || 403) {
+              document.getElementById("change-password-modal-close").click();
+            }
+            this.handleErrorResponse(errorResponse);
           }
         );  
       }
+    }
+  }
+
+  private handleErrorResponse(errorResponse: HttpErrorResponse): void {
+    if (errorResponse.status == 401 || 403) {
+      this.authenticationService.logout();
+      this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
+      this.router.navigateByUrl("/login");
+    } else {
+      this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
     }
   }
 }

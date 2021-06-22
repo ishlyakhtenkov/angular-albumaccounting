@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Dish } from 'src/app/common/dish';
 import { Menu } from 'src/app/common/menu';
 import { MenuTo } from 'src/app/common/menu-to';
-import { NotificationType } from 'src/app/enum/notification-type.enum';
+import { NotificationType } from 'src/app/enums/notification-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { MenuService } from 'src/app/services/menu.service';
 import { NotificationService } from 'src/app/services/notification.service';

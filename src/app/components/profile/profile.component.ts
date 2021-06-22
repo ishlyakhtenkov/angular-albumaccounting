@@ -1,11 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/common/user';
-import { UserTo } from 'src/app/common/user-to';
-import { NotificationType } from 'src/app/enum/notification-type.enum';
+import { NotificationType } from 'src/app/enums/notification-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { UserService } from 'src/app/services/user.service';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { ProfileService } from 'src/app/services/profile.service';
@@ -28,45 +26,36 @@ export class ProfileComponent implements OnInit {
               private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    this.handleUserProfile();
+    this.makeChangePasswordFormGroup();
+  }
+
+  private handleUserProfile() {
     this.profileService.getProfile().subscribe(
       (response: User) => {
         this.profile = response;
       },
       (errorResponse: HttpErrorResponse) => {
-        this.authenticationService.logout();
-        this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
-        this.router.navigateByUrl("/login");
+        this.handleErrorResponse(errorResponse);
       }
     );
-
-    this.makeChangePasswordFormGroup();
   }
 
-    // Getters for Change Password FormGroup values
-    get newPassword() {
-      return this.changePasswordFormGroup.get('changedPassword.newPassword');
-    }
-    get repeatNewPassword() {
-      return this.changePasswordFormGroup.get('changedPassword.repeatNewPassword');
-    }
-  
+  private makeChangePasswordFormGroup() {
+    this.changePasswordFormGroup = this.formBuilder.group({
+      changedPassword: this.formBuilder.group({
+        newPassword: new FormControl('', [Validators.required, Validators.minLength(5), CustomValidators.notOnlyWhitespace]),
+        repeatNewPassword: new FormControl('', [Validators.required])
+      }, { validator: this.checkIfMatchingPasswords('newPassword', 'repeatNewPassword') })
+    });
+  }
 
-  updateProfile(theUserTo: UserTo): void {
-    // if (+this.user.id == 100000 || +this.user.id == 100001) {
-    //   this.notificationService.sendNotification(NotificationType.ERROR, `Test profile cannot be updated!`);
-    // } else {
-    //   // let userTo = new UserTo(this.user.id, theUserTo.name, theUserTo.email, theUserTo.password);
-    // // this.userService.updateUser(userTo).subscribe(
-    //   response => {
-    //     this.notificationService.sendNotification(NotificationType.SUCCESS, `The profile was updated`);
-    //     // const authData = window.btoa(theUserTo.email + ':' + theUserTo.password);
-    //     // this.authenticationService.saveToken(authData);
-    //   },
-    //   (errorResponse: HttpErrorResponse) => {
-    //     this.handleErrorResponse(errorResponse);
-    //   }
-    // )
-    // }
+  // Getters for changePasswordFormGroup values
+  get newPassword() {
+    return this.changePasswordFormGroup.get('changedPassword.newPassword');
+  }
+  get repeatNewPassword() {
+    return this.changePasswordFormGroup.get('changedPassword.repeatNewPassword');
   }
 
   logOut(): void {
@@ -75,13 +64,8 @@ export class ProfileComponent implements OnInit {
     this.router.navigateByUrl("/albums");
   }
 
-  makeChangePasswordFormGroup() {
-    this.changePasswordFormGroup = this.formBuilder.group({
-      changedPassword: this.formBuilder.group({
-        newPassword: new FormControl('', [Validators.required, Validators.minLength(5), CustomValidators.notOnlyWhitespace]),
-        repeatNewPassword: new FormControl('', [Validators.required])
-      }, {validator: this.checkIfMatchingPasswords('newPassword', 'repeatNewPassword')})
-    });
+  back(): void {
+    this.location.back()
   }
 
   editPassword() {
@@ -89,7 +73,7 @@ export class ProfileComponent implements OnInit {
       changedPassword: this.formBuilder.group({
         newPassword: new FormControl('', [Validators.required, Validators.minLength(5), CustomValidators.notOnlyWhitespace]),
         repeatNewPassword: new FormControl('', [Validators.required])
-      }, {validator: this.checkIfMatchingPasswords('newPassword', 'repeatNewPassword')})
+      }, { validator: this.checkIfMatchingPasswords('newPassword', 'repeatNewPassword') })
     });
   }
 
@@ -98,13 +82,13 @@ export class ProfileComponent implements OnInit {
       let passwordInput = group.controls[passwordKey];
       let repeatPasswordInput = group.controls[repeatPasswordKey];
       if (!repeatPasswordInput.value) {
-        return repeatPasswordInput.setErrors({required: true});
+        return repeatPasswordInput.setErrors({ required: true });
       }
       if (passwordInput.value !== repeatPasswordInput.value) {
-        return repeatPasswordInput.setErrors({notEquivalent: true});
+        return repeatPasswordInput.setErrors({ notEquivalent: true });
       }
       else {
-          return repeatPasswordInput.setErrors(null);
+        return repeatPasswordInput.setErrors(null);
       }
     }
   }
@@ -123,6 +107,9 @@ export class ProfileComponent implements OnInit {
             this.notificationService.sendNotification(NotificationType.SUCCESS, `Password has been changed`);
           },
           (errorResponse: HttpErrorResponse) => {
+            if (errorResponse.status == 401 || 403) {
+              document.getElementById("change-password-modal-close").click();
+            }
             this.handleErrorResponse(errorResponse);
           }
         );
@@ -130,13 +117,8 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-
-  back(): void {
-    this.location.back()
-  }
-
   private handleErrorResponse(errorResponse: HttpErrorResponse): void {
-    if (errorResponse.status == 401) {
+    if (errorResponse.status == 401 || 403) {
       this.authenticationService.logout();
       this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
       this.router.navigateByUrl("/login");

@@ -1,11 +1,11 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark box-shadow">
-    <div class="container">
-        <a href="#" class="navbar-brand font-weight-bold">
-            <img src="assets/images/albums.png" width="30" height="30" class="d-inline-block align-top" alt="">
-            Album Accounting System
-        </a>
+	<div class="container">
+		<a href="#" class="navbar-brand font-weight-bold">
+			<img src="assets/images/albums.png" width="30" height="30" class="d-inline-block align-top" alt="">
+			Album Accounting System
+		</a>
 
-        <ul class="navbar-nav mr-auto">
+		<ul class="navbar-nav mr-auto">
 			<li [hidden]="!isAdmin()" class="nav-item">
 				<a class="nav-link" routerLink="/users">
 					Users <i class="fas fa-users"></i>
@@ -16,25 +16,25 @@
 					Albums <i class="fas fa-book"></i>
 				</a>
 			</li>
-            <li [hidden]="!isAdmin()" class="nav-item">
+			<li [hidden]="!isAdmin()" class="nav-item">
 				<a class="nav-link" routerLink="/departments">
 					Departments <i class="fas fa-briefcase"></i>
 				</a>
 			</li>
-            <li [hidden]="!isUserLoggedIn()" class="nav-item">
+			<li [hidden]="!isUserLoggedIn()" class="nav-item">
 				<a class="nav-link" routerLink="/employees">
 					Employees <i class="fas fa-user-tie"></i>
 				</a>
 			</li>
 		</ul>
 
-        <a *ngIf="isUserLoggedIn()" routerLink="/profile" class="btn btn-sm btn-outline-secondary">
-            <span>Profile</span>
-            <i class="fas fa-user-alt ml-1"></i>
-        </a>
-        <a *ngIf="!isUserLoggedIn()" (click)="routeToLogin()" class="btn btn-sm btn-outline-secondary">
-            <span>Login</span>
-            <i class="fas fa-sign-in-alt ml-1"></i>
-        </a>
-    </div>
+		<a *ngIf="isUserLoggedIn()" routerLink="/profile" class="btn btn-sm btn-outline-secondary">
+			<span>Profile</span>
+			<i class="fas fa-user-alt ml-1"></i>
+		</a>
+		<a *ngIf="!isUserLoggedIn()" (click)="routeToLogin()" class="btn btn-sm btn-outline-secondary">
+			<span>Login</span>
+			<i class="fas fa-sign-in-alt ml-1"></i>
+		</a>
+	</div>
 </nav>
