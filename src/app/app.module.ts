@@ -33,6 +33,7 @@ import { DepartmentComponent } from './components/department/department.componen
 import { AlbumComponent } from './components/album/album.component';
 import { UserComponent } from './components/user/user.component';
 import { EmployeeService } from './services/employee.service';
+import { EmployeeComponent } from './components/employee/employee.component';
 
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthenticationGuard]},
@@ -41,7 +42,8 @@ const routes: Routes = [
   {path: 'restaurant-form', component: RestaurantFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'restaurants/:id', component: RestaurantDetailsComponent},
   {path: 'search/:keyword', component: RestaurantListComponent},
-  {path: 'departments', component: DepartmentComponent},
+  {path: 'departments', component: DepartmentComponent, canActivate: [AdminGuard]},
+  {path: 'employees', component: EmployeeComponent, canActivate: [AuthenticationGuard]},
   {path: 'albums', component: AlbumComponent},
   {path: 'users', component: UserComponent, canActivate: [AdminGuard]},
   {path: '', redirectTo: '/albums', pathMatch: 'full'},
@@ -63,7 +65,8 @@ const routes: Routes = [
     ProfileComponent,
     DepartmentComponent,
     AlbumComponent,
-    UserComponent
+    UserComponent,
+    EmployeeComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

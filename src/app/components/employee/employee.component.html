@@ -1,0 +1,50 @@
+<!-- Employees Table -->
+<div class="container mt-2">
+    <div class="row mt-2">
+        <div class="col-3">
+            <h2 class="text-secondary font-weight-bold">Employees</h2>
+        </div>
+        <div class="col-3">
+            <select [(ngModel)]="selectedDepartment" class="custom-select" (change)="listEmployees()">
+                <option *ngFor="let department of departments" [ngValue]="department">
+                    {{ department.name }}
+                </option>
+            </select>
+        </div>
+        <div class="col-6 text-right">
+            <div class="btn-group">
+                <button type="button" (click)="makeEmployeeAddFormGroup()" class="btn btn-info" data-toggle="modal" data-target="#addEmployeeModal">
+                  <i class="fas fa-plus"></i> Add Employee
+                </button>
+            </div>
+        </div>
+    </div>
+    <table *ngIf="employees?.length > 0" class="table">
+        <thead class="thead-dark">
+            <tr align="center">
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let tempEmployee of employees" align="center">
+                <td class="align-middle">{{ tempEmployee.name }}</td>
+                <td class="align-middle">{{ tempEmployee.phoneNumber }}</td>
+                <td class="align-middle">
+                    <button (click)="editEmployee(tempEmployee)" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#editEmployeeModal">
+                        <i class="fa fa-pencil-alt" aria-hidden="true"></i>
+                    </button>      
+                    <button (click)="deleteEmployee(tempEmployee.id, tempEmployee.name)" class="btn btn-outline-danger btn-sm ml-1"><i class="fas fa-trash" aria-hidden="true"></i></button>     
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- if employees is empty then display a message -->
+    <div *ngIf="employees?.length == 0" class="container">
+        <div class="row">
+            <h4 class="alert alert-warning col-md-12">No employees found.</h4>
+        </div>
+    </div>
+</div>
