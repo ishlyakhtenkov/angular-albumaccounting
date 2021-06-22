@@ -27,9 +27,11 @@ import { SearchComponent } from './components/search/search.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AdminGuard } from './guards/admin.guard';
-import { UserListComponent } from './components/user-list/user-list.component';
-import { AlbumListComponent } from './components/album-list/album-list.component';
 import { ProfileService } from './services/profile.service';
+import { DepartmentService } from './services/department.service';
+import { DepartmentComponent } from './components/department/department.component';
+import { AlbumComponent } from './components/album/album.component';
+import { UserComponent } from './components/user/user.component';
 
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthenticationGuard]},
@@ -38,8 +40,9 @@ const routes: Routes = [
   {path: 'restaurant-form', component: RestaurantFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'restaurants/:id', component: RestaurantDetailsComponent},
   {path: 'search/:keyword', component: RestaurantListComponent},
-  {path: 'albums', component: AlbumListComponent},
-  {path: 'users', component: UserListComponent, canActivate: [AdminGuard]},
+  {path: 'departments', component: DepartmentComponent},
+  {path: 'albums', component: AlbumComponent},
+  {path: 'users', component: UserComponent, canActivate: [AdminGuard]},
   {path: '', redirectTo: '/albums', pathMatch: 'full'},
   {path: '**', redirectTo: '/albums', pathMatch: 'full'}
 ];
@@ -57,8 +60,9 @@ const routes: Routes = [
     HeaderComponent,
     FooterComponent,
     ProfileComponent,
-    UserListComponent,
-    AlbumListComponent
+    DepartmentComponent,
+    AlbumComponent,
+    UserComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -70,7 +74,7 @@ const routes: Routes = [
     FormsModule
   ],
   providers: [RestaurantService, AuthenticationService, UserService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, 
-    AuthenticationGuard, AdminGuard, NotificationService, MenuService, VoteService, ProfileService],
+    AuthenticationGuard, AdminGuard, NotificationService, MenuService, VoteService, ProfileService, DepartmentService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

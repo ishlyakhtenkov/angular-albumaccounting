@@ -11,11 +11,11 @@ import { UserService } from 'src/app/services/user.service';
 import { CustomValidators } from 'src/app/validators/custom-validators';
 
 @Component({
-  selector: 'app-user-list',
-  templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.css']
+  selector: 'app-user',
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.css']
 })
-export class UserListComponent implements OnInit {
+export class UserComponent implements OnInit {
 
   users: User[];
 
@@ -151,7 +151,7 @@ export class UserListComponent implements OnInit {
           this.listUsers();
         },
         (errorResponse: HttpErrorResponse) => {
-          if (errorResponse.status == 401 || 403) {
+          if (errorResponse.status == 401 || errorResponse.status == 403) {
             document.getElementById("user-add-modal-close").click();
           }
           this.handleErrorResponse(errorResponse);
@@ -205,7 +205,7 @@ export class UserListComponent implements OnInit {
           this.listUsers();
         },
         (errorResponse: HttpErrorResponse) => {
-          if (errorResponse.status == 401 || 403) {
+          if (errorResponse.status == 401 || errorResponse.status == 403) {
             document.getElementById("user-edit-modal-close").click();
           }
           this.handleErrorResponse(errorResponse);
@@ -269,7 +269,7 @@ export class UserListComponent implements OnInit {
             this.notificationService.sendNotification(NotificationType.SUCCESS, `Password for ${this.nameEdited.value} was updated`);
           },
           (errorResponse: HttpErrorResponse) => {
-            if (errorResponse.status == 401 || 403) {
+            if (errorResponse.status == 401 || errorResponse.status == 403) {
               document.getElementById("change-password-modal-close").click();
             }
             this.handleErrorResponse(errorResponse);
@@ -280,7 +280,7 @@ export class UserListComponent implements OnInit {
   }
 
   private handleErrorResponse(errorResponse: HttpErrorResponse): void {
-    if (errorResponse.status == 401 || 403) {
+    if (errorResponse.status == 401 || errorResponse.status == 403) {
       this.authenticationService.logout();
       this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
       this.router.navigateByUrl("/login");
