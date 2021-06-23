@@ -1,17 +1,23 @@
 <!-- Employees Table -->
 <div class="container mt-2">
     <div class="row mt-2">
-        <div class="col-3">
+        <div class="col-4">
             <h2 class="text-secondary font-weight-bold">Employees</h2>
         </div>
-        <div class="col-3">
+        <div class="col-1">
+
+        </div>
+        <div class="col-2">
             <select [(ngModel)]="selectedDepartment" class="custom-select" (change)="listEmployees()">
                 <option *ngFor="let department of departments" [ngValue]="department">
                     {{ department.name }}
                 </option>
             </select>
         </div>
-        <div class="col-6 text-right">
+        <div class="col-1">
+            
+        </div>
+        <div class="col-4 text-right">
             <div class="btn-group">
                 <button type="button" (click)="makeEmployeeAddFormGroup()" class="btn btn-info" data-toggle="modal" data-target="#addEmployeeModal">
                   <i class="fas fa-plus"></i> Add Employee
@@ -32,7 +38,7 @@
                 <td class="align-middle">{{ tempEmployee.name }}</td>
                 <td class="align-middle">{{ tempEmployee.phoneNumber }}</td>
                 <td class="align-middle">
-                    <button (click)="editEmployee(tempEmployee)" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#editEmployeeModal">
+                    <button (click)="prepareEmployeeEditFormGroup(tempEmployee)" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#editEmployeeModal">
                         <i class="fa fa-pencil-alt" aria-hidden="true"></i>
                     </button>      
                     <button (click)="deleteEmployee(tempEmployee.id, tempEmployee.name)" class="btn btn-outline-danger btn-sm ml-1"><i class="fas fa-trash" aria-hidden="true"></i></button>     
@@ -45,6 +51,139 @@
     <div *ngIf="employees?.length == 0" class="container">
         <div class="row">
             <h4 class="alert alert-warning col-md-12">No employees found.</h4>
+        </div>
+    </div>
+</div>
+
+<!-- Employee Add Modal Form -->
+<div class="modal draggable fade bd-example-modal-lg" id="addEmployeeModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center">New Employee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-left">
+                <div>
+                    <form [formGroup]="employeeAddFormGroup" (ngSubmit)="onAddNewEmployee()">
+                        <div formGroupName="employee" class="text-left">
+                            <div class="form-group">
+                                <label for="name">Employee Name</label>
+                                <input formControlName="name" type="text" class="form-control" placeholder="Employee name">
+                                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="name.errors.required || name.errors.notOnlyWhitespace">
+                                        Name is required
+                                    </div>
+                                    <div *ngIf="name.errors.minlength">
+                                        Name must be at least 2 characters long
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Employee Phone Number</label>
+                                <input formControlName="phoneNumber" type="text" class="form-control" placeholder="Employee Phone Number">
+                                <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="phoneNumber.errors.required || phoneNumber.errors.notOnlyWhitespace">
+                                        Phone Number is required
+                                    </div>
+                                    <div *ngIf="phoneNumber.errors.minlength">
+                                        Phone Number must be at least 2 characters long
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="department">Employee Department</label>
+                                <select formControlName="department" class="form-control" aria-placeholder="Employee Department">
+                                    <option value="" selected disabled hidden>Employee Department</option>
+                                    <option *ngFor="let department of departments" [ngValue]="department">
+                                        {{ department.name }}
+                                    </option>
+                                </select>
+                                <div *ngIf="department.invalid && (department.dirty || department.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="department.errors.required">
+                                        Department is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-info btn-block">Save</button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="employee-add-modal-close" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Employee Edit Modal Form -->
+<div class="modal draggable fade bd-example-modal-lg" id="editEmployeeModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center">Edit Employee: {{ nameEdited.value }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-left">
+                <div>
+                    <form [formGroup]="employeeEditFormGroup" (ngSubmit)="onUpdateEmployee()">
+                        <div formGroupName="employee" class="text-left">
+                            <div class="form-group">
+                                <input formControlName="id" type="hidden">
+                            </div>
+                            <div class="form-group">
+                                <label for="nameEdited">Employee Name</label>
+                                <input formControlName="nameEdited" type="text" class="form-control" placeholder="Employee name">
+                                <div *ngIf="nameEdited.invalid && (nameEdited.dirty || nameEdited.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="nameEdited.errors.required || nameEdited.errors.notOnlyWhitespace">
+                                        Name is required
+                                    </div>
+                                    <div *ngIf="nameEdited.errors.minlength">
+                                        Name must be at least 2 characters long
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Employee Phone Number</label>
+                                <input formControlName="phoneNumberEdited" type="text" class="form-control" placeholder="Employee Phone Number">
+                                <div *ngIf="phoneNumberEdited.invalid && (phoneNumberEdited.dirty || phoneNumberEdited.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="phoneNumberEdited.errors.required || phoneNumberEdited.errors.notOnlyWhitespace">
+                                        Phone Number is required
+                                    </div>
+                                    <div *ngIf="phoneNumberEdited.errors.minlength">
+                                        Phone Number must be at least 2 characters long
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="department">Employee Department</label>
+                                <select formControlName="departmentEdited" class="form-control" aria-placeholder="Employee Department">
+                                    <option value="" selected disabled hidden>Employee Department</option>
+                                    <option *ngFor="let department of departments" [ngValue]="department">
+                                        {{ department.name }}
+                                    </option>
+                                </select>
+                                <div *ngIf="departmentEdited.invalid && (departmentEdited.dirty || departmentEdited.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="departmentEdited.errors.required">
+                                        Department is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-info btn-block">Save</button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="employee-edit-modal-close" >Close</button>
+            </div>
         </div>
     </div>
 </div>

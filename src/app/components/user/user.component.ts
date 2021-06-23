@@ -172,7 +172,7 @@ export class UserComponent implements OnInit {
     });
   }
 
-  editUser(user: User) {
+  prepareUserEditFormGroup(user: User) {
     this.userEditFormGroup = this.formBuilder.group({
       user: this.formBuilder.group({
         id: [user.id],
@@ -243,7 +243,7 @@ export class UserComponent implements OnInit {
     });
   }
 
-  editPassword(userId: number) {
+  prepareChangePasswordFormGroup(userId: number) {
     document.getElementById("user-edit-modal-close").click();
     this.changePasswordFormGroup = this.formBuilder.group({
       changedPassword: this.formBuilder.group({

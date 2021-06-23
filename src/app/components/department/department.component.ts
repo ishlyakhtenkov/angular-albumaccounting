@@ -45,7 +45,7 @@ export class DepartmentComponent implements OnInit {
   makeDepartmentAddFormGroup() {
     this.departmentAddFormGroup = this.formBuilder.group({
       department: this.formBuilder.group({
-        name: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
+        name: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace])
       })
     });
   }
@@ -94,7 +94,7 @@ export class DepartmentComponent implements OnInit {
     }
   }
 
-  editDepartment(department: Department) {
+  prepareDepartmentEditFormGroup(department: Department) {
     this.departmentEditFormGroup = this.formBuilder.group({
       department: this.formBuilder.group({
         id: [department.id],

@@ -68,7 +68,7 @@ export class ProfileComponent implements OnInit {
     this.location.back()
   }
 
-  editPassword() {
+  prepareChangePasswordFormGroup() {
     this.changePasswordFormGroup = this.formBuilder.group({
       changedPassword: this.formBuilder.group({
         newPassword: new FormControl('', [Validators.required, Validators.minLength(5), CustomValidators.notOnlyWhitespace]),
