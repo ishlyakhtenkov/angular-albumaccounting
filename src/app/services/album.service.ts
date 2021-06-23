@@ -18,9 +18,14 @@ export class AlbumService {
     return this.httpClient.get<Album>(`${this.albumsUrl}/${id}`);
   }
 
-  getAlbumListPaginate(page: number, size: number): Observable<Album[]> {
+  getAlbumListPaginate(page: number, size: number): Observable<GetResponseAlbums> {
     const paginateQueryParams = `?page=${page}&size=${size}`;
-    return this.httpClient.get<Album[]>(`${this.albumsUrl}${paginateQueryParams}`);
+    return this.httpClient.get<GetResponseAlbums>(`${this.albumsUrl}${paginateQueryParams}`);
+  }
+
+  searchAlbumsPaginate(keyWord: string, page: number, size: number): Observable<GetResponseAlbums> {
+    const keyWordAndPaginateQueryParams = `?keyWord=${keyWord}&page=${page}&size=${size}`;
+    return this.httpClient.get<GetResponseAlbums>(`${this.albumsUrl}/by${keyWordAndPaginateQueryParams}`);
   }
 
   createAlbum(albumTo: AlbumTo): Observable<Album> {
@@ -34,4 +39,13 @@ export class AlbumService {
   deleteAlbum(id: number): Observable<any> {
     return this.httpClient.delete<any>(`${this.albumsUrl}/${id}`);
   }
+}
+
+interface GetResponseAlbums {
+  content: Album[],
+  pageable: {
+    page: number,
+    size: number
+  },
+  total: number
 }

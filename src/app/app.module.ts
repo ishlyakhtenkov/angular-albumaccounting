@@ -30,11 +30,11 @@ import { AdminGuard } from './guards/admin.guard';
 import { ProfileService } from './services/profile.service';
 import { DepartmentService } from './services/department.service';
 import { DepartmentComponent } from './components/department/department.component';
-import { AlbumComponent } from './components/album/album.component';
 import { UserComponent } from './components/user/user.component';
 import { EmployeeService } from './services/employee.service';
 import { EmployeeComponent } from './components/employee/employee.component';
 import { AlbumService } from './services/album.service';
+import { AlbumComponent } from './components/album/album.component';
 
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthenticationGuard]},

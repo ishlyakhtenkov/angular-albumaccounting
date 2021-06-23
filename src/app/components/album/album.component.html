@@ -1,1 +1,74 @@
-<p>album works!</p>
+<!-- Albums Table -->
+<div class="container mt-2">
+    <div class="row mt-2">
+        <div class="col-6">
+            <h2 class="text-secondary font-weight-bold">Albums</h2>
+        </div>
+        <div class="col-6 text-right">
+            <div class="btn-group">
+                <div class="form-inline">
+                    <input #myInput type="text" placeholder="Search albums..." class="form-control mr-sm-2"
+                        (keyup.enter)="searchAlbums(myInput.value)">
+                </div>
+                <button type="button" (click)="makeAlbumAddFormGroup()" class="btn btn-info" data-toggle="modal" data-target="#addAlbumModal">
+                  <i class="fas fa-plus"></i> Add Album
+                </button>
+            </div>
+        </div>
+    </div>
+    <table *ngIf="albums?.length > 0" class="table">
+        <thead class="thead-dark">
+            <tr align="center">
+                <th>Decimal Number</th>
+                <th>Stamp</th>
+                <th>Location</th>
+                <th>Holder</th>
+                <th>Phone Number</th>
+                <th>Department</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let tempAlbum of albums" align="center">
+                <td class="align-middle">{{ tempAlbum.decimalNumber }}</td>
+                <td class="align-middle">{{ tempAlbum.stamp }}</td>
+                <td class="align-middle">{{ tempAlbum.location }}</td>
+                <td class="align-middle">{{ tempAlbum.holder.name }}</td>
+                <td class="align-middle">{{ tempAlbum.holder.phoneNumber }}</td>
+                <td class="align-middle">{{ tempAlbum.holder.department.name }}</td>
+                <td class="align-middle">
+                    <button (click)="prepareAlbumEditFormGroup(tempAlbum)" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#editAlbumModal">
+                        <i class="fa fa-pencil-alt" aria-hidden="true"></i>
+                    </button>      
+                    <button (click)="deleteAlbum(tempAlbum.id, tempAlbum.decimalNumber)" class="btn btn-outline-danger btn-sm ml-1"><i class="fas fa-trash" aria-hidden="true"></i></button>     
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- if albums is empty then display a message -->
+    <div *ngIf="albums?.length == 0" class="container">
+        <div class="row">
+            <h4 class="alert alert-warning col-md-12">No albums found.</h4>
+        </div>
+    </div>
+
+    <!-- pagiantion -->
+    <div class="footer-pagination">
+        <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-9" style="padding-left: 30%">
+                        <ngb-pagination [(page)]="pageNumber" 
+                                        [pageSize]="pageSize" 
+                                        [collectionSize]="totalElements" (pageChange)="listAlbums()">
+                                        <!-- TODO  make pagination works when keyword search-->
+                        </ngb-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

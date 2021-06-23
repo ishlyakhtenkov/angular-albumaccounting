@@ -22,7 +22,7 @@ export class UserService {
     return this.httpClient.get<User[]>(this.usersUrl);
   }
 
-  searchUsers(keyWord: string) {
+  searchUsers(keyWord: string): Observable<User[]> {
     return this.httpClient.get<User[]>(`${this.usersUrl}/by?keyWord=${keyWord}`);
   }
 

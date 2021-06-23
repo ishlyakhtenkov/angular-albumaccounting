@@ -107,7 +107,7 @@ export class ProfileComponent implements OnInit {
             this.notificationService.sendNotification(NotificationType.SUCCESS, `Password has been changed`);
           },
           (errorResponse: HttpErrorResponse) => {
-            if (errorResponse.status == 401 || 403) {
+            if (errorResponse.status == 401 || errorResponse.status == 403) {
               document.getElementById("change-password-modal-close").click();
             }
             this.handleErrorResponse(errorResponse);
@@ -118,7 +118,7 @@ export class ProfileComponent implements OnInit {
   }
 
   private handleErrorResponse(errorResponse: HttpErrorResponse): void {
-    if (errorResponse.status == 401 || 403) {
+    if (errorResponse.status == 401 || errorResponse.status == 403) {
       this.authenticationService.logout();
       this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
       this.router.navigateByUrl("/login");
