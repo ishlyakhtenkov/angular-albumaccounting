@@ -22,6 +22,10 @@ export class HeaderComponent implements OnInit {
     return this.authenticationService.isAdmin();
   }
 
+  isLoginPage(): boolean {
+   return this.router.url.includes('/login');
+  }
+
   routeToLogin(): void {
     console.log(this.router.url);
     this.router.navigate([`/login`], 

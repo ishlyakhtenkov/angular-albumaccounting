@@ -23,9 +23,13 @@ export class AlbumComponent implements OnInit {
 
   albums: Album[];
 
+  searchModeActivated: boolean = false;
+
+  keyWord: string = null;
+
   //properties for pagination
   pageNumber: number = 1;
-  pageSize: number = 1;
+  pageSize: number = 10;
   totalElements: number = 0;
 
   constructor(private albumService: AlbumService, private employeeService: EmployeeService, private departmentService: DepartmentService, private notificationService: NotificationService, 
@@ -33,6 +37,13 @@ export class AlbumComponent implements OnInit {
 
   ngOnInit(): void {
     this.listAlbums();
+  }
+
+  searchAlbums(keyWord: string) {
+    this.searchModeActivated = true;
+    this.pageNumber = 1;
+    this.keyWord = keyWord.trim();
+    this.listAlbumsByKeyWord();
   }
 
   listAlbums() {
@@ -49,10 +60,9 @@ export class AlbumComponent implements OnInit {
     );
   }
 
-  searchAlbums(keyWord: string) {
-    keyWord = keyWord.trim();
-    if (keyWord.length > 0) {
-      this.albumService.searchAlbumsPaginate(keyWord, this.pageNumber - 1, this.pageSize).subscribe(
+  listAlbumsByKeyWord() {
+    if (this.keyWord.length > 0) {
+      this.albumService.searchAlbumsPaginate(this.keyWord, this.pageNumber - 1, this.pageSize).subscribe(
         response => {
           this.albums = response.content;
           this.pageNumber = response.pageable.page + 1;
@@ -66,6 +76,20 @@ export class AlbumComponent implements OnInit {
     } else {
       this.listAlbums();
     }
+  }
+
+  doPaginate() {
+    if (this.searchModeActivated) {
+      this.listAlbumsByKeyWord();
+    } else {
+      this.listAlbums();
+    }
+  }
+
+  updatePageSize(pageSize: number) {
+    this.pageSize = pageSize;
+    this.pageNumber = 1;
+    this.doPaginate();
   }
 
   makeAlbumAddFormGroup() {
