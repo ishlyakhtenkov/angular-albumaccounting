@@ -12,7 +12,7 @@
             <div class="input-group-append">
               <span class="input-group-text"><i class="fas fa-user"></i></span>
             </div>
-            <input type="text" class="form-control" name="userName" placeholder="Email" ngModel #usernameInput="ngModel"
+            <input type="text" autocomplete="username" class="form-control" name="userName" placeholder="Email" ngModel #usernameInput="ngModel"
               required>
           </div>
           <span class="help-block" style="color:red;" *ngIf="usernameInput.invalid && usernameInput.touched">Please
@@ -21,7 +21,7 @@
             <div class="input-group-append">
               <span class="input-group-text"><i class="fas fa-key"></i></span>
             </div>
-            <input type="password" class="form-control" name="password" placeholder="Password" ngModel
+            <input type="password" autocomplete="current-password" class="form-control" name="password" placeholder="Password" ngModel
               #passwordInput="ngModel" required>
           </div>
           <span class="help-block" style="color:red;" *ngIf="passwordInput.invalid && passwordInput.touched">Please
