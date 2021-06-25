@@ -25,6 +25,8 @@ export class UserComponent implements OnInit {
 
   changePasswordFormGroup: FormGroup;
 
+  refreshing: boolean;
+
   constructor(private userService: UserService, private notificationService: NotificationService, 
               private formBuilder: FormBuilder, private authenticationService: AuthenticationService, private router: Router) { }
 
@@ -36,25 +38,31 @@ export class UserComponent implements OnInit {
   }
 
   listUsers() {
+    this.refreshing = true;
     this.userService.getUserList().subscribe(
       (response: User[]) => {
         this.users = response;
+        this.refreshing = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.handleErrorResponse(errorResponse);
+        this.refreshing = false;
       }
     );
   }
 
   searchUsers(keyWord: string) {
+    this.refreshing = true;
     keyWord = keyWord.trim();
     if (keyWord.length > 0) {
       this.userService.searchUsers(keyWord).subscribe(
         (response: User[]) => {
           this.users = response;
+          this.refreshing = false;
         },
         (errorResponse: HttpErrorResponse) => {
           this.handleErrorResponse(errorResponse);
+          this.refreshing = false;
         }
       );
     } else {

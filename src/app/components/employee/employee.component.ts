@@ -29,6 +29,8 @@ export class EmployeeComponent implements OnInit {
 
   employeeEditFormGroup: FormGroup;
 
+  refreshing: boolean;
+
   constructor(private employeeService: EmployeeService, private departmentService: DepartmentService, private notificationService: NotificationService, 
     private formBuilder: FormBuilder, private authenticationService: AuthenticationService, private router: Router) { }
 
@@ -42,17 +44,20 @@ export class EmployeeComponent implements OnInit {
     this.employeeService.getEmployeeList(+this.selectedDepartment.id).subscribe(
       (response: Employee[]) => {
         this.employees = response;
+        this.refreshing = false;
       },
       (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 422) {
           this.listDepartments();
         }
         this.handleErrorResponse(errorResponse);
+        this.refreshing = false;
       }
     );
   }
 
   listDepartments() {
+    this.refreshing = true;
     this.departmentService.getDepartmentList().subscribe(
       (response: Department[]) => {
         this.departments = response;
@@ -70,7 +75,7 @@ export class EmployeeComponent implements OnInit {
       employee: this.formBuilder.group({
         name: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
         phoneNumber: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
-        department: new FormControl('', [Validators.required])
+        department: new FormControl(this.selectedDepartment, [Validators.required])
       })
     });
   }

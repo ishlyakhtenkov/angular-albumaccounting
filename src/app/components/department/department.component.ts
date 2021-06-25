@@ -22,6 +22,8 @@ export class DepartmentComponent implements OnInit {
 
   departmentEditFormGroup: FormGroup;
 
+  refreshing: boolean;
+
   constructor(private departmentService: DepartmentService, private notificationService: NotificationService, 
     private formBuilder: FormBuilder, private authenticationService: AuthenticationService, private router: Router) { }
 
@@ -32,12 +34,15 @@ export class DepartmentComponent implements OnInit {
   }
 
   listDepartments() {
+    this.refreshing = true;
     this.departmentService.getDepartmentList().subscribe(
       (response: Department[]) => {
         this.departments = response;
+        this.refreshing = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.handleErrorResponse(errorResponse);
+        this.refreshing = false;
       }
     );
   }

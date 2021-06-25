@@ -28,7 +28,6 @@ export class AlbumComponent implements OnInit {
   albumEditFormGroup: FormGroup;
   departments: Department[] = [];
   employees: Employee[] = [];
-  editedAlbum: Album;
 
   searchByDecimalModeActivated: boolean = false;
   decimalNumberSearch: string = null;
@@ -39,6 +38,8 @@ export class AlbumComponent implements OnInit {
   pageNumber: number = 1;
   pageSize: number = 5;
   totalElements: number = 0;
+
+  refreshing: boolean;
 
   constructor(private albumService: AlbumService, private employeeService: EmployeeService, private departmentService: DepartmentService, private notificationService: NotificationService, 
     private formBuilder: FormBuilder, private authenticationService: AuthenticationService, private router: Router) { }
@@ -70,30 +71,36 @@ export class AlbumComponent implements OnInit {
   }
 
   listAlbums() {
+    this.refreshing = true;
     this.albumService.getAlbumListPaginate(this.pageNumber - 1, this.pageSize).subscribe(
       response => {
         this.albums = response.content;
         this.pageNumber = response.pageable.page + 1;
         this.pageSize = response.pageable.size;
         this.totalElements = response.total;
+        this.refreshing = false;
       },
       (errorResponse: HttpErrorResponse) => {
         this.handleErrorResponse(errorResponse);
+        this.refreshing = false;
       }
     );
   }
 
   listAlbumsByDecimalNumber() {
+    this.refreshing = true;
     if (this.decimalNumberSearch.length > 0) {
       this.albumService.searchAlbumsByDecimalPaginate(this.decimalNumberSearch, this.pageNumber - 1, this.pageSize).subscribe(
         response => {
           this.albums = response.content;
           this.pageNumber = response.pageable.page + 1;
           this.pageSize = response.pageable.size;
-          this.totalElements = response.total;  
+          this.totalElements = response.total;
+          this.refreshing = false;  
         },
         (errorResponse: HttpErrorResponse) => {
           this.handleErrorResponse(errorResponse);
+          this.refreshing = false;
         }
       );
     } else {
@@ -102,16 +109,19 @@ export class AlbumComponent implements OnInit {
   }
 
   listAlbumsByHolderName() {
+    this.refreshing = true;
     if (this.holderNameSearch.length > 0) {
       this.albumService.searchAlbumsByHolderPaginate(this.holderNameSearch, this.pageNumber - 1, this.pageSize).subscribe(
         response => {
           this.albums = response.content;
           this.pageNumber = response.pageable.page + 1;
           this.pageSize = response.pageable.size;
-          this.totalElements = response.total;  
+          this.totalElements = response.total;
+          this.refreshing = false;
         },
         (errorResponse: HttpErrorResponse) => {
           this.handleErrorResponse(errorResponse);
+          this.refreshing = false;
         }
       );
     } else {
@@ -127,6 +137,18 @@ export class AlbumComponent implements OnInit {
     } else {
       this.listAlbums();
     }
+  }
+
+  refresh() {
+    this.refreshing = true;
+    (<HTMLInputElement>document.getElementById("inputHolderNameField")).value='';
+    (<HTMLInputElement>document.getElementById("inputDecimalNumberField")).value='';
+    this.searchByDecimalModeActivated = false;
+    this.decimalNumberSearch = null;
+    this.searchByHolderModeActivated = false;
+    this.holderNameSearch = null;
+    this.pageNumber = 1;
+    this.listAlbums();
   }
 
   updatePageSize(pageSize: number) {
