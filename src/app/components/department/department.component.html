@@ -68,7 +68,10 @@
                                         Name is required
                                     </div>
                                     <div *ngIf="name.errors.minlength">
-                                        Name must be at least 2 characters long
+                                        Name must be at least 4 characters long
+                                    </div>
+                                    <div *ngIf="name.errors.maxlength">
+                                        Name must be no more than 20 characters long
                                     </div>
                                 </div>
                             </div>
@@ -110,7 +113,10 @@
                                         Name is required
                                     </div>
                                     <div *ngIf="nameEdited.errors.minlength">
-                                        Name must be at least 2 characters long
+                                        Name must be at least 4 characters long
+                                    </div>
+                                    <div *ngIf="nameEdited.errors.maxlength">
+                                        Name must be no more than 20 characters long
                                     </div>
                                 </div>
                             </div>

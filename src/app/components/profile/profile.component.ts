@@ -44,7 +44,7 @@ export class ProfileComponent implements OnInit {
   private makeChangePasswordFormGroup() {
     this.changePasswordFormGroup = this.formBuilder.group({
       changedPassword: this.formBuilder.group({
-        newPassword: new FormControl('', [Validators.required, Validators.minLength(5), CustomValidators.notOnlyWhitespace]),
+        newPassword: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(32), CustomValidators.notOnlyWhitespace]),
         repeatNewPassword: new FormControl('', [Validators.required])
       }, { validator: this.checkIfMatchingPasswords('newPassword', 'repeatNewPassword') })
     });
@@ -71,7 +71,7 @@ export class ProfileComponent implements OnInit {
   prepareChangePasswordFormGroup() {
     this.changePasswordFormGroup = this.formBuilder.group({
       changedPassword: this.formBuilder.group({
-        newPassword: new FormControl('', [Validators.required, Validators.minLength(5), CustomValidators.notOnlyWhitespace]),
+        newPassword: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(32), CustomValidators.notOnlyWhitespace]),
         repeatNewPassword: new FormControl('', [Validators.required])
       }, { validator: this.checkIfMatchingPasswords('newPassword', 'repeatNewPassword') })
     });

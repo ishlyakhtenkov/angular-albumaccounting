@@ -125,6 +125,9 @@
                                     <div *ngIf="newPassword.errors.minlength">
                                         Password must be at least 5 characters long
                                     </div>
+                                    <div *ngIf="newPassword.errors.maxlength">
+                                        Password must be no more than 32 characters long
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -136,9 +139,6 @@
                                     <div
                                         *ngIf="repeatNewPassword.errors.required || repeatNewPassword.errors.notOnlyWhitespace">
                                         Password is required
-                                    </div>
-                                    <div *ngIf="repeatNewPassword.errors.minlength">
-                                        Password must be at least 5 characters long
                                     </div>
                                     <div *ngIf="repeatNewPassword.errors.notEquivalent">
                                         Passwords do not match

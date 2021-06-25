@@ -162,7 +162,7 @@ export class AlbumComponent implements OnInit {
     this.getDepartments();
     this.albumAddFormGroup = this.formBuilder.group({
       album: this.formBuilder.group({
-        decimalNumber: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
+        decimalNumber: new FormControl('', [Validators.required, Validators.minLength(12), Validators.maxLength(30), CustomValidators.notOnlyWhitespace]),
         stamp: new FormControl('', [Validators.required]),
         department: new FormControl('', [Validators.required]),
         holder: new FormControl('', [Validators.required])
@@ -174,7 +174,7 @@ export class AlbumComponent implements OnInit {
     this.albumEditFormGroup = this.formBuilder.group({
       album: this.formBuilder.group({
         id: [''],
-        decimalNumberEdited: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
+        decimalNumberEdited: new FormControl('', [Validators.required, Validators.minLength(12), Validators.maxLength(30), CustomValidators.notOnlyWhitespace]),
         stampEdited: new FormControl('', [Validators.required]),
         departmentEdited: new FormControl('', [Validators.required]),
         holderEdited: new FormControl('', [Validators.required])
@@ -297,7 +297,7 @@ export class AlbumComponent implements OnInit {
             this.albumEditFormGroup = this.formBuilder.group({
               album: this.formBuilder.group({
                 id: [album.id],
-                decimalNumberEdited: new FormControl(album.decimalNumber, [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
+                decimalNumberEdited: new FormControl(album.decimalNumber, [Validators.required, Validators.minLength(12), Validators.maxLength(30), CustomValidators.notOnlyWhitespace]),
                 stampEdited: new FormControl(album.stamp, [Validators.required]),
                 departmentEdited: new FormControl(this.departments[departmentIndex], [Validators.required]),
                 holderEdited: new FormControl(this.employees[holderIndex], [Validators.required])
@@ -315,7 +315,7 @@ export class AlbumComponent implements OnInit {
             this.albumEditFormGroup = this.formBuilder.group({
               album: this.formBuilder.group({
                 id: [album.id],
-                decimalNumberEdited: new FormControl(album.decimalNumber, [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
+                decimalNumberEdited: new FormControl(album.decimalNumber, [Validators.required, Validators.minLength(12), Validators.maxLength(30), CustomValidators.notOnlyWhitespace]),
                 stampEdited: new FormControl(album.stamp, [Validators.required]),
                 departmentEdited: new FormControl((departmentIndex != -1) ? this.departments[departmentIndex] : '', [Validators.required]),
                 holderEdited: new FormControl((holderIndex != -1) ? this.employees[holderIndex] : '', [Validators.required])

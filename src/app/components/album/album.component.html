@@ -117,7 +117,10 @@
                                         Decimal Number is required
                                     </div>
                                     <div *ngIf="decimalNumber.errors.minlength">
-                                        Decimal Number must be at least 2 characters long
+                                        Decimal Number must be at least 12 characters long
+                                    </div>
+                                    <div *ngIf="decimalNumber.errors.maxLength">
+                                        Decimal Number must be be no more than 30 characters long
                                     </div>
                                 </div>
                             </div>
@@ -198,7 +201,10 @@
                                         Decimal Number is required
                                     </div>
                                     <div *ngIf="decimalNumberEdited.errors.minlength">
-                                        Decimal Number must be at least 2 characters long
+                                        Decimal Number must be at least 12 characters long
+                                    </div>
+                                    <div *ngIf="decimalNumberEdited.errors.maxLength">
+                                        Decimal Number must be be no more than 30 characters long
                                     </div>
                                 </div>
                             </div>

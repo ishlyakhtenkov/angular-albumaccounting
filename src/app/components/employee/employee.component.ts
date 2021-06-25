@@ -83,8 +83,8 @@ export class EmployeeComponent implements OnInit {
   makeEmployeeAddFormGroup() {
     this.employeeAddFormGroup = this.formBuilder.group({
       employee: this.formBuilder.group({
-        name: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
-        phoneNumber: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
+        name: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(20), CustomValidators.notOnlyWhitespace]),
+        phoneNumber: new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(20), CustomValidators.notOnlyWhitespace]),
         department: new FormControl(this.selectedDepartment, [Validators.required])
       })
     });
@@ -94,8 +94,8 @@ export class EmployeeComponent implements OnInit {
     this.employeeEditFormGroup = this.formBuilder.group({
       employee: this.formBuilder.group({
         id: [''],
-        nameEdited: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
-        phoneNumberEdited: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
+        nameEdited: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(20), CustomValidators.notOnlyWhitespace]),
+        phoneNumberEdited: new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(20), CustomValidators.notOnlyWhitespace]),
         departmentEdited: new FormControl('', [Validators.required])
       })
     });
@@ -153,8 +153,8 @@ export class EmployeeComponent implements OnInit {
     this.employeeEditFormGroup = this.formBuilder.group({
       employee: this.formBuilder.group({
         id: [employee.id],
-        nameEdited: new FormControl(employee.name, [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
-        phoneNumberEdited: new FormControl(employee.phoneNumber, [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
+        nameEdited: new FormControl(employee.name, [Validators.required, Validators.minLength(4), Validators.maxLength(20), CustomValidators.notOnlyWhitespace]),
+        phoneNumberEdited: new FormControl(employee.phoneNumber, [Validators.required, Validators.minLength(7), Validators.maxLength(20), CustomValidators.notOnlyWhitespace]),
         departmentEdited: new FormControl(this.selectedDepartment, [Validators.required])
       })
     });

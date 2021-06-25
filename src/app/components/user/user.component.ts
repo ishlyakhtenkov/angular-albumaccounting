@@ -118,11 +118,11 @@ export class UserComponent implements OnInit {
   makeUserAddFormGroup() {
     this.userAddFormGroup = this.formBuilder.group({
       user: this.formBuilder.group({
-        name: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
-        email: new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
+        name: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(20), CustomValidators.notOnlyWhitespace]),
+        email: new FormControl('', [Validators.required, Validators.maxLength(40), Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
         enabled: [true],
         roles: new FormControl('', [Validators.required]),
-        password: new FormControl('', [Validators.required, Validators.minLength(5), CustomValidators.notOnlyWhitespace]),
+        password: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(32), CustomValidators.notOnlyWhitespace]),
         repeatPassword: new FormControl('', [Validators.required])
       }, {validator: this.checkIfMatchingPasswords('password', 'repeatPassword')})
     });
@@ -172,8 +172,8 @@ export class UserComponent implements OnInit {
     this.userEditFormGroup = this.formBuilder.group({
       user: this.formBuilder.group({
         id: [''],
-        nameEdited: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
-        emailEdited: new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
+        nameEdited: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(20), CustomValidators.notOnlyWhitespace]),
+        emailEdited: new FormControl('', [Validators.required, Validators.maxLength(40), Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
         enabledEdited: [true],
         rolesEdited: new FormControl('', [Validators.required])
       })
@@ -184,8 +184,8 @@ export class UserComponent implements OnInit {
     this.userEditFormGroup = this.formBuilder.group({
       user: this.formBuilder.group({
         id: [user.id],
-        nameEdited: new FormControl(user.name, [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
-        emailEdited: new FormControl(user.email, [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
+        nameEdited: new FormControl(user.name, [Validators.required, Validators.minLength(4), Validators.maxLength(20), CustomValidators.notOnlyWhitespace]),
+        emailEdited: new FormControl(user.email, [Validators.required, Validators.maxLength(40), Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
         enabledEdited: [user.enabled],
         rolesEdited: new FormControl(user.roles, [Validators.required])
       })
@@ -245,7 +245,7 @@ export class UserComponent implements OnInit {
     this.changePasswordFormGroup = this.formBuilder.group({
       changedPassword: this.formBuilder.group({
         changePasswordId: [''],
-        newPassword: new FormControl('', [Validators.required, Validators.minLength(5), CustomValidators.notOnlyWhitespace]),
+        newPassword: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(32), CustomValidators.notOnlyWhitespace]),
         repeatNewPassword: new FormControl('', [Validators.required])
       }, {validator: this.checkIfMatchingPasswords('newPassword', 'repeatNewPassword')})
     });
@@ -256,7 +256,7 @@ export class UserComponent implements OnInit {
     this.changePasswordFormGroup = this.formBuilder.group({
       changedPassword: this.formBuilder.group({
         changePasswordId: [userId],
-        newPassword: new FormControl('', [Validators.required, Validators.minLength(5), CustomValidators.notOnlyWhitespace]),
+        newPassword: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(32), CustomValidators.notOnlyWhitespace]),
         repeatNewPassword: new FormControl('', [Validators.required])
       }, {validator: this.checkIfMatchingPasswords('newPassword', 'repeatNewPassword')})
     });
