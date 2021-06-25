@@ -8,7 +8,7 @@
             <div class="btn-group">
                 <div class="form-inline">
                     <input #myInput type="text" placeholder="Search albums..." spellcheck="false" class="form-control"
-                        (keyup.enter)="searchAlbums(myInput.value)">
+                        (keyup.enter)="searchAlbumsByDecimal(myInput.value)">
                 </div>
                 <button [hidden]="!isLoggedIn()" (click)="makeAlbumAddFormGroup()" class="btn btn-info ml-2" data-toggle="modal" data-target="#addAlbumModal">
                   <i class="fas fa-plus"></i> Add Album

@@ -30,8 +30,8 @@ export class AlbumComponent implements OnInit {
   employees: Employee[] = [];
   editedAlbum: Album;
 
-  searchModeActivated: boolean = false;
-  keyWord: string = null;
+  searchByDecimalModeActivated: boolean = false;
+  decimalNumberSearch: string = null;
 
   //properties for pagination
   pageNumber: number = 1;
@@ -49,11 +49,11 @@ export class AlbumComponent implements OnInit {
     }
   }
 
-  searchAlbums(keyWord: string) {
-    this.searchModeActivated = true;
+  searchAlbumsByDecimal(decimalNumberSearch: string) {
+    this.searchByDecimalModeActivated = true;
     this.pageNumber = 1;
-    this.keyWord = keyWord.trim();
-    this.listAlbumsByKeyWord();
+    this.decimalNumberSearch = decimalNumberSearch.trim();
+    this.listAlbumsByDecimalNumber();
   }
 
   listAlbums() {
@@ -70,9 +70,9 @@ export class AlbumComponent implements OnInit {
     );
   }
 
-  listAlbumsByKeyWord() {
-    if (this.keyWord.length > 0) {
-      this.albumService.searchAlbumsPaginate(this.keyWord, this.pageNumber - 1, this.pageSize).subscribe(
+  listAlbumsByDecimalNumber() {
+    if (this.decimalNumberSearch.length > 0) {
+      this.albumService.searchAlbumsByDecimalPaginate(this.decimalNumberSearch, this.pageNumber - 1, this.pageSize).subscribe(
         response => {
           this.albums = response.content;
           this.pageNumber = response.pageable.page + 1;
@@ -89,8 +89,8 @@ export class AlbumComponent implements OnInit {
   }
 
   getAlbumsPage() {
-    if (this.searchModeActivated) {
-      this.listAlbumsByKeyWord();
+    if (this.searchByDecimalModeActivated) {
+      this.listAlbumsByDecimalNumber();
     } else {
       this.listAlbums();
     }

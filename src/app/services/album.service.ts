@@ -23,9 +23,9 @@ export class AlbumService {
     return this.httpClient.get<GetResponseAlbums>(`${this.albumsUrl}${paginateQueryParams}`);
   }
 
-  searchAlbumsPaginate(keyWord: string, page: number, size: number): Observable<GetResponseAlbums> {
-    const keyWordAndPaginateQueryParams = `?keyWord=${keyWord}&page=${page}&size=${size}`;
-    return this.httpClient.get<GetResponseAlbums>(`${this.albumsUrl}/by${keyWordAndPaginateQueryParams}`);
+  searchAlbumsByDecimalPaginate(decimalNumber: string, page: number, size: number): Observable<GetResponseAlbums> {
+    const decimalNumberAndPaginateQueryParams = `?decimalNumber=${decimalNumber}&page=${page}&size=${size}`;
+    return this.httpClient.get<GetResponseAlbums>(`${this.albumsUrl}/byDecimal${decimalNumberAndPaginateQueryParams}`);
   }
 
   createAlbum(albumTo: AlbumTo): Observable<Album> {
