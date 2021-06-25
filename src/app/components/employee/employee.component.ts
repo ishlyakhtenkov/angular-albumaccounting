@@ -21,7 +21,7 @@ export class EmployeeComponent implements OnInit {
 
   departments: Department[] = [];
 
-  selectedDepartment: Department;
+  selectedDepartment: Department = null;
 
   employees: Employee[];
 
@@ -41,6 +41,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   listEmployees() {
+    this.refreshing = true;
     this.employeeService.getEmployeeList(+this.selectedDepartment.id).subscribe(
       (response: Employee[]) => {
         this.employees = response;
@@ -61,7 +62,16 @@ export class EmployeeComponent implements OnInit {
     this.departmentService.getDepartmentList().subscribe(
       (response: Department[]) => {
         this.departments = response;
-        this.selectedDepartment = this.departments[0];
+        if (this.selectedDepartment == null) {
+          this.selectedDepartment = this.departments[0];
+        } else {
+          let selectedDepartmentIndex = this.departments.findIndex(tempDepartment => tempDepartment.name === this.selectedDepartment.name);
+          if (selectedDepartmentIndex != -1) {
+            this.selectedDepartment = this.departments[selectedDepartmentIndex];
+          } else {
+            this.selectedDepartment = this.departments[0];
+          }
+        }
         this.listEmployees();
       },
       (errorResponse: HttpErrorResponse) => {
