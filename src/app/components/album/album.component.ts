@@ -32,6 +32,8 @@ export class AlbumComponent implements OnInit {
 
   searchByDecimalModeActivated: boolean = false;
   decimalNumberSearch: string = null;
+  searchByHolderModeActivated: boolean = false;
+  holderNameSearch: string = null;
 
   //properties for pagination
   pageNumber: number = 1;
@@ -50,10 +52,21 @@ export class AlbumComponent implements OnInit {
   }
 
   searchAlbumsByDecimal(decimalNumberSearch: string) {
+    (<HTMLInputElement>document.getElementById("inputHolderNameField")).value='';
+    this.searchByHolderModeActivated = false;
     this.searchByDecimalModeActivated = true;
     this.pageNumber = 1;
     this.decimalNumberSearch = decimalNumberSearch.trim();
     this.listAlbumsByDecimalNumber();
+  }
+
+  searchAlbumsByHolder(holderNameSearch: string) {
+    (<HTMLInputElement>document.getElementById("inputDecimalNumberField")).value='';
+    this.searchByDecimalModeActivated = false;
+    this.searchByHolderModeActivated = true;
+    this.pageNumber = 1;
+    this.holderNameSearch = holderNameSearch.trim();
+    this.listAlbumsByHolderName();
   }
 
   listAlbums() {
@@ -88,9 +101,29 @@ export class AlbumComponent implements OnInit {
     }
   }
 
+  listAlbumsByHolderName() {
+    if (this.holderNameSearch.length > 0) {
+      this.albumService.searchAlbumsByHolderPaginate(this.holderNameSearch, this.pageNumber - 1, this.pageSize).subscribe(
+        response => {
+          this.albums = response.content;
+          this.pageNumber = response.pageable.page + 1;
+          this.pageSize = response.pageable.size;
+          this.totalElements = response.total;  
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.handleErrorResponse(errorResponse);
+        }
+      );
+    } else {
+      this.listAlbums();
+    }
+  }
+
   getAlbumsPage() {
     if (this.searchByDecimalModeActivated) {
       this.listAlbumsByDecimalNumber();
+    } else if (this.searchByHolderModeActivated) {
+      this.listAlbumsByHolderName();
     } else {
       this.listAlbums();
     }

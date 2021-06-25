@@ -28,6 +28,11 @@ export class AlbumService {
     return this.httpClient.get<GetResponseAlbums>(`${this.albumsUrl}/byDecimal${decimalNumberAndPaginateQueryParams}`);
   }
 
+  searchAlbumsByHolderPaginate(holderName: string, page: number, size: number): Observable<GetResponseAlbums> {
+    const holderNameAndPaginateQueryParams = `?holderName=${holderName}&page=${page}&size=${size}`;
+    return this.httpClient.get<GetResponseAlbums>(`${this.albumsUrl}/byHolder${holderNameAndPaginateQueryParams}`);
+  }
+
   createAlbum(albumTo: AlbumTo): Observable<Album> {
     return this.httpClient.post<Album>(this.albumsUrl, albumTo);
   }

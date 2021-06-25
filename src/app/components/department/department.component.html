@@ -23,10 +23,10 @@
             <tr *ngFor="let tempDepartment of departments" align="center">
                 <td class="align-middle">{{ tempDepartment.name }}</td>
                 <td class="align-middle">
-                    <button (click)="prepareDepartmentEditFormGroup(tempDepartment)" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#editDepartmentModal">
+                    <button (click)="prepareDepartmentEditFormGroup(tempDepartment)" class="btn btn-outline-info btn-sm" title="Update Department" data-toggle="modal" data-target="#editDepartmentModal">
                         <i class="fa fa-pencil-alt" aria-hidden="true"></i>
                     </button>      
-                    <button (click)="deleteDepartment(tempDepartment.id, tempDepartment.name)" class="btn btn-outline-danger btn-sm ml-1"><i class="fas fa-trash" aria-hidden="true"></i></button>     
+                    <button (click)="deleteDepartment(tempDepartment.id, tempDepartment.name)" class="btn btn-outline-danger btn-sm ml-1" title="Delete Department"><i class="fas fa-trash" aria-hidden="true"></i></button>     
                 </td>
             </tr>
         </tbody>
