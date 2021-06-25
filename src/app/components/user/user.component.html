@@ -89,7 +89,7 @@
                                     <div *ngIf="email.errors.required">
                                         Email is required
                                     </div>
-                                    <div *ngIf="email.errors.email">
+                                    <div *ngIf="email.errors.pattern">
                                         Must be email
                                     </div>
                                 </div>
@@ -190,7 +190,7 @@
                                     <div *ngIf="emailEdited.errors.required">
                                         Email is required
                                     </div>
-                                    <div *ngIf="emailEdited.errors.email">
+                                    <div *ngIf="emailEdited.errors.pattern">
                                         Must be email
                                     </div>
                                 </div>

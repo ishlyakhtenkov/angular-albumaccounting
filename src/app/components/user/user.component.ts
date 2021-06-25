@@ -111,7 +111,7 @@ export class UserComponent implements OnInit {
     this.userAddFormGroup = this.formBuilder.group({
       user: this.formBuilder.group({
         name: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
-        email: new FormControl('', [Validators.required, Validators.email]),
+        email: new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
         enabled: [true],
         roles: new FormControl('', [Validators.required]),
         password: new FormControl('', [Validators.required, Validators.minLength(5), CustomValidators.notOnlyWhitespace]),
@@ -165,7 +165,7 @@ export class UserComponent implements OnInit {
       user: this.formBuilder.group({
         id: [''],
         nameEdited: new FormControl('', [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
-        emailEdited: new FormControl('', [Validators.required, Validators.email]),
+        emailEdited: new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
         enabledEdited: [true],
         rolesEdited: new FormControl('', [Validators.required])
       })
@@ -177,7 +177,7 @@ export class UserComponent implements OnInit {
       user: this.formBuilder.group({
         id: [user.id],
         nameEdited: new FormControl(user.name, [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
-        emailEdited: new FormControl(user.email, [Validators.required, Validators.email]),
+        emailEdited: new FormControl(user.email, [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
         enabledEdited: [user.enabled],
         rolesEdited: new FormControl(user.roles, [Validators.required])
       })
