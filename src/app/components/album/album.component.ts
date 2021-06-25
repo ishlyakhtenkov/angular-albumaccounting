@@ -188,25 +188,40 @@ export class AlbumComponent implements OnInit {
         this.departments = response;
       },
       (errorResponse: HttpErrorResponse) => {
+        this.employees = null;
         this.handleErrorResponse(errorResponse);
       }
     );
   }
 
   getEmployees(formGroupName: string) {
+    this.employees = null;
     const isAlbumAddFormGroup: boolean = (formGroupName == 'albumAddFormGroup');
     let departmentId: number = (isAlbumAddFormGroup) ? this.department.value.id : this.departmentEdited.value.id;
 
     this.employeeService.getEmployeeList(departmentId).subscribe(
       (response: Employee[]) => {
         this.employees = response;
-        if (isAlbumAddFormGroup) {
-          this.holder.setValue(this.employees[0]);
+        if (this.employees.length > 0) {
+          if (isAlbumAddFormGroup) {
+            this.holder.setValue(this.employees[0]);
+          } else {
+            this.holderEdited.setValue(this.employees[0]);
+          }
         } else {
-          this.holderEdited.setValue(this.employees[0]);
+          if (isAlbumAddFormGroup) {
+            this.holder.setValue('');
+          } else {
+            this.holderEdited.setValue('');
+          }
         }
       },
       (errorResponse: HttpErrorResponse) => {
+        if (isAlbumAddFormGroup) {
+          this.holder.setValue('');
+        } else {
+          this.holderEdited.setValue('');
+        }
         this.handleErrorResponse(errorResponse);
       }
     );
@@ -267,26 +282,51 @@ export class AlbumComponent implements OnInit {
   }
 
   prepareAlbumEditFormGroup(album: Album) {
-    let departmentId = album.holder.department.id;
-    this.employeeService.getEmployeeList(+departmentId).subscribe(
-      (response: Employee[]) => {
-        this.employees = response;
+    this.departmentService.getDepartmentList().subscribe(
+      (response: Department[]) => {
+        this.departments = response;
+        let departmentId = album.holder.department.id;
+        this.employeeService.getEmployeeList(+departmentId).subscribe(
+          (response: Employee[]) => {
+            this.employees = response;
 
-        // get indexes of department from departmments array and holder from employees for use this department in FormControl
-        let departmentIndex = this.departments.findIndex(tempDepartment => tempDepartment.name === album.holder.department.name);
-        let holderIndex = this.employees.findIndex(tempEmployee => tempEmployee.name === album.holder.name);
+            // get indexes of department from departmments array and holder from employees for use this department in FormControl
+            let departmentIndex = this.departments.findIndex(tempDepartment => tempDepartment.name === album.holder.department.name);
+            let holderIndex = this.employees.findIndex(tempEmployee => tempEmployee.name === album.holder.name);
 
-        this.albumEditFormGroup = this.formBuilder.group({
-          album: this.formBuilder.group({
-            id: [album.id],
-            decimalNumberEdited: new FormControl(album.decimalNumber, [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
-            stampEdited: new FormControl(album.stamp, [Validators.required]),
-            departmentEdited: new FormControl(this.departments[departmentIndex], [Validators.required]),
-            holderEdited: new FormControl(this.employees[holderIndex], [Validators.required])
-          })
-        });
+            this.albumEditFormGroup = this.formBuilder.group({
+              album: this.formBuilder.group({
+                id: [album.id],
+                decimalNumberEdited: new FormControl(album.decimalNumber, [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
+                stampEdited: new FormControl(album.stamp, [Validators.required]),
+                departmentEdited: new FormControl(this.departments[departmentIndex], [Validators.required]),
+                holderEdited: new FormControl(this.employees[holderIndex], [Validators.required])
+              })
+            });
+          },
+          (errorResponse: HttpErrorResponse) => {
+            this.employees = [];
+            this.handleErrorResponse(errorResponse);
+
+            // get indexes of department from departmments array and holder from employees for use this department in FormControl
+            let departmentIndex = this.departments.findIndex(tempDepartment => tempDepartment.name === album.holder.department.name);
+            let holderIndex = this.employees.findIndex(tempEmployee => tempEmployee.name === album.holder.name);
+
+            this.albumEditFormGroup = this.formBuilder.group({
+              album: this.formBuilder.group({
+                id: [album.id],
+                decimalNumberEdited: new FormControl(album.decimalNumber, [Validators.required, Validators.minLength(2), CustomValidators.notOnlyWhitespace]),
+                stampEdited: new FormControl(album.stamp, [Validators.required]),
+                departmentEdited: new FormControl((departmentIndex != -1) ? this.departments[departmentIndex] : '', [Validators.required]),
+                holderEdited: new FormControl((holderIndex != -1) ? this.employees[holderIndex] : '', [Validators.required])
+              })
+            });
+
+          }
+        );
       },
       (errorResponse: HttpErrorResponse) => {
+        this.employees = null;
         this.handleErrorResponse(errorResponse);
       }
     );

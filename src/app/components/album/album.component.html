@@ -219,7 +219,7 @@
                             <div class="form-group">
                                 <label for="department">Album Holder Department</label>
                                 <select formControlName="departmentEdited" class="form-control" (change)="getEmployees('albumEditFormGroup')">
-                                    <!-- <option value="" selected disabled hidden>Album Holder Department</option> -->
+                                    <option value="" selected disabled hidden>Album Holder Department</option>
                                     <option *ngFor="let department of departments" [ngValue]="department">
                                         {{ department.name }}
                                     </option>
