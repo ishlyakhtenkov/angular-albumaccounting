@@ -15,7 +15,7 @@ export class AppComponent {
   constructor(private router: Router) {
     router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
-        if (event['url'].startsWith('/login') || event['url'] == '/register' || event['url'] == '/profile') {
+        if (event['url'].startsWith('/login') || event['url'] == '/profile') {
           this.showHeader = true;
           this.showSearch = false;
         } else {
