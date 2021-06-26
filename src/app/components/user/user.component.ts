@@ -22,6 +22,7 @@ export class UserComponent implements OnInit {
   userAddFormGroup: FormGroup;
 
   userEditFormGroup: FormGroup;
+  editedUserName: string;
 
   changePasswordFormGroup: FormGroup;
 
@@ -181,6 +182,7 @@ export class UserComponent implements OnInit {
   }
 
   prepareUserEditFormGroup(user: User) {
+    this.editedUserName = user.name;
     this.userEditFormGroup = this.formBuilder.group({
       user: this.formBuilder.group({
         id: [user.id],

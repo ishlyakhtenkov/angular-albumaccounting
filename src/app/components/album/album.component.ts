@@ -28,6 +28,7 @@ export class AlbumComponent implements OnInit {
   albumEditFormGroup: FormGroup;
   departments: Department[] = [];
   employees: Employee[] = [];
+  editedAlbumDecimalNumber: string;
 
   searchByDecimalModeActivated: boolean = false;
   decimalNumberSearch: string = null;
@@ -282,6 +283,7 @@ export class AlbumComponent implements OnInit {
   }
 
   prepareAlbumEditFormGroup(album: Album) {
+    this.editedAlbumDecimalNumber = album.decimalNumber;
     this.departmentService.getDepartmentList().subscribe(
       (response: Department[]) => {
         this.departments = response;

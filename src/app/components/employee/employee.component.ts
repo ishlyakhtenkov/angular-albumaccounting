@@ -28,6 +28,7 @@ export class EmployeeComponent implements OnInit {
   employeeAddFormGroup: FormGroup;
 
   employeeEditFormGroup: FormGroup;
+  editedEmployeeName: string;
 
   refreshing: boolean;
 
@@ -150,6 +151,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   prepareEmployeeEditFormGroup(employee: Employee) {
+    this.editedEmployeeName = employee.name;
     this.employeeEditFormGroup = this.formBuilder.group({
       employee: this.formBuilder.group({
         id: [employee.id],

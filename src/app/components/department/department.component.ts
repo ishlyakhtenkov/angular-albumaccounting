@@ -21,6 +21,7 @@ export class DepartmentComponent implements OnInit {
   departmentAddFormGroup: FormGroup;
 
   departmentEditFormGroup: FormGroup;
+  editedDepartmentName: string;
 
   refreshing: boolean;
 
@@ -100,6 +101,7 @@ export class DepartmentComponent implements OnInit {
   }
 
   prepareDepartmentEditFormGroup(department: Department) {
+    this.editedDepartmentName = department.name;
     this.departmentEditFormGroup = this.formBuilder.group({
       department: this.formBuilder.group({
         id: [department.id],
