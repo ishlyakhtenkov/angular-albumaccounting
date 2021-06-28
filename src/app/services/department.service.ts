@@ -13,10 +13,6 @@ export class DepartmentService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getDepartment(id: number): Observable<Department> {
-    return this.httpClient.get<Department>(`${this.departmentsUrl}/${id}`);
-  }
-
   getDepartmentList(): Observable<Department[]> {
     return this.httpClient.get<Department[]>(this.departmentsUrl);
   }

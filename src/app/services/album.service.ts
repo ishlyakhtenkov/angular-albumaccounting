@@ -14,10 +14,6 @@ export class AlbumService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAlbum(id: number): Observable<Album> {
-    return this.httpClient.get<Album>(`${this.albumsUrl}/${id}`);
-  }
-
   getAlbumListPaginate(page: number, size: number): Observable<GetResponseAlbums> {
     const paginateQueryParams = `?page=${page}&size=${size}`;
     return this.httpClient.get<GetResponseAlbums>(`${this.albumsUrl}${paginateQueryParams}`);

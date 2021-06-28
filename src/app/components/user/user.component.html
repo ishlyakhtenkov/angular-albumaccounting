@@ -10,13 +10,15 @@
                     <input #myInput type="text" placeholder="Search users..." class="form-control mr-sm-2"
                         (keyup.enter)="searchUsers(myInput.value)">
                 </div>
-                <button type="button" (click)="makeUserAddFormGroup()" class="btn btn-info mr-2" data-toggle="modal" data-target="#addUserModal">
-                  <i class="fas fa-plus"></i> Add User
+                <button type="button" (click)="makeUserAddFormGroup()" class="btn btn-info mr-2" data-toggle="modal"
+                    data-target="#addUserModal">
+                    <i class="fas fa-plus"></i> Add User
                 </button>
             </div>
             <div class="btn-group">
                 <button type="button" (click)="listUsers()" class="btn btn-light">
-                  <i *ngIf="refreshing" class="fas fa-sync fa-spin"></i><i *ngIf="!refreshing" class="fas fa-sync"></i>
+                    <i *ngIf="refreshing" class="fas fa-sync fa-spin"></i><i *ngIf="!refreshing"
+                        class="fas fa-sync"></i>
                 </button>
             </div>
         </div>
@@ -43,10 +45,12 @@
                 </td>
                 <td class="align-middle">{{ tempUser.registered | date:'mediumDate' }}</td>
                 <td class="align-middle">
-                    <button (click)="prepareUserEditFormGroup(tempUser)" class="btn btn-outline-info btn-sm" title="Update User" data-toggle="modal" data-target="#editUserModal">
+                    <button (click)="prepareUserEditFormGroup(tempUser)" class="btn btn-outline-info btn-sm"
+                        title="Update User" data-toggle="modal" data-target="#editUserModal">
                         <i class="fa fa-pencil-alt" aria-hidden="true"></i>
-                    </button>      
-                    <button (click)="deleteUser(tempUser.id, tempUser.name)" class="btn btn-outline-danger btn-sm ml-1" title="Delete User"><i class="fas fa-trash" aria-hidden="true"></i></button>     
+                    </button>
+                    <button (click)="deleteUser(tempUser.id, tempUser.name)" class="btn btn-outline-danger btn-sm ml-1"
+                        title="Delete User"><i class="fas fa-trash" aria-hidden="true"></i></button>
                 </td>
             </tr>
         </tbody>
@@ -78,7 +82,8 @@
                             <div class="form-group">
                                 <label for="name">User Name</label>
                                 <input formControlName="name" type="text" class="form-control" placeholder="User name">
-                                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger mt-1">
+                                <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="name.errors.required || name.errors.notOnlyWhitespace">
                                         Name is required
                                     </div>
@@ -92,8 +97,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="email">User email</label>
-                                <input formControlName="email" type="email" autocomplete="username" class="form-control" placeholder="User email">
-                                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger mt-1">
+                                <input formControlName="email" type="email" autocomplete="username" class="form-control"
+                                    placeholder="User email">
+                                <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="email.errors.required">
                                         Email is required
                                     </div>
@@ -111,7 +118,8 @@
                                     <option value="ADMIN">ADMIN</option>
                                     <option value="ARCHIVE_WORKER">ARCHIVE_WORKER</option>
                                 </select>
-                                <div *ngIf="roles.invalid && (roles.dirty || roles.touched)" class="alert alert-danger mt-1">
+                                <div *ngIf="roles.invalid && (roles.dirty || roles.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="roles.errors.required">
                                         At least one role is required
                                     </div>
@@ -119,8 +127,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="password">User Password</label>
-                                <input formControlName="password" type="password" autocomplete="new-password" class="form-control" placeholder="User password">
-                                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger mt-1">
+                                <input formControlName="password" type="password" autocomplete="new-password"
+                                    class="form-control" placeholder="User password">
+                                <div *ngIf="password.invalid && (password.dirty || password.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="password.errors.required || password.errors.notOnlyWhitespace">
                                         Password is required
                                     </div>
@@ -134,9 +144,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="repeatPassword">Repeat Password</label>
-                                <input formControlName="repeatPassword" type="password" autocomplete="new-password" class="form-control" placeholder="Repeat password">
-                                <div *ngIf="repeatPassword.invalid && (repeatPassword.dirty || repeatPassword.touched)" class="alert alert-danger mt-1">
-                                    <div *ngIf="repeatPassword.errors.required || repeatPassword.errors.notOnlyWhitespace">
+                                <input formControlName="repeatPassword" type="password" autocomplete="new-password"
+                                    class="form-control" placeholder="Repeat password">
+                                <div *ngIf="repeatPassword.invalid && (repeatPassword.dirty || repeatPassword.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div
+                                        *ngIf="repeatPassword.errors.required || repeatPassword.errors.notOnlyWhitespace">
                                         Password is required
                                     </div>
                                     <div *ngIf="repeatPassword.errors.notEquivalent">
@@ -147,8 +160,8 @@
                             <div class="form-group">
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                      <input type="checkbox" formControlName="enabled" class="form-check-input" >
-                                      Active
+                                        <input type="checkbox" formControlName="enabled" class="form-check-input">
+                                        Active
                                     </label>
                                 </div>
                             </div>
@@ -158,7 +171,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="user-add-modal-close" >Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    id="user-add-modal-close">Close</button>
             </div>
         </div>
     </div>
@@ -184,8 +198,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="nameEdited">User Name</label>
-                                <input formControlName="nameEdited" type="text" class="form-control" placeholder="User name">
-                                <div *ngIf="nameEdited.invalid && (nameEdited.dirty || nameEdited.touched)" class="alert alert-danger mt-1">
+                                <input formControlName="nameEdited" type="text" class="form-control"
+                                    placeholder="User name">
+                                <div *ngIf="nameEdited.invalid && (nameEdited.dirty || nameEdited.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="nameEdited.errors.required || nameEdited.errors.notOnlyWhitespace">
                                         Name is required
                                     </div>
@@ -199,8 +215,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="emailEdited">User email</label>
-                                <input formControlName="emailEdited" type="email" autocomplete="username" class="form-control" placeholder="User email">
-                                <div *ngIf="emailEdited.invalid && (emailEdited.dirty || emailEdited.touched)" class="alert alert-danger mt-1">
+                                <input formControlName="emailEdited" type="email" autocomplete="username"
+                                    class="form-control" placeholder="User email">
+                                <div *ngIf="emailEdited.invalid && (emailEdited.dirty || emailEdited.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="emailEdited.errors.required">
                                         Email is required
                                     </div>
@@ -218,7 +236,8 @@
                                     <option value="ADMIN">ADMIN</option>
                                     <option value="ARCHIVE_WORKER">ARCHIVE_WORKER</option>
                                 </select>
-                                <div *ngIf="rolesEdited.invalid && (rolesEdited.dirty || rolesEdited.touched)" class="alert alert-danger mt-1">
+                                <div *ngIf="rolesEdited.invalid && (rolesEdited.dirty || rolesEdited.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="rolesEdited.errors.required">
                                         At least one role is required
                                     </div>
@@ -227,8 +246,8 @@
                             <div class="form-group">
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                      <input type="checkbox" formControlName="enabledEdited" class="form-check-input" >
-                                      Active
+                                        <input type="checkbox" formControlName="enabledEdited" class="form-check-input">
+                                        Active
                                     </label>
                                 </div>
                             </div>
@@ -238,10 +257,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" (click)="prepareChangePasswordFormGroup(id.value)" class="btn btn-danger" data-toggle="modal" data-target="#changePasswordModal">
+                <button type="button" (click)="prepareChangePasswordFormGroup(id.value)" class="btn btn-danger"
+                    data-toggle="modal" data-target="#changePasswordModal">
                     Change password
-                </button>      
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="user-edit-modal-close" >Close</button>
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    id="user-edit-modal-close">Close</button>
             </div>
         </div>
     </div>
@@ -267,8 +288,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="newPassword">New Password</label>
-                                <input formControlName="newPassword" type="password" autocomplete="new-password" class="form-control" placeholder="New password">
-                                <div *ngIf="newPassword.invalid && (newPassword.dirty || newPassword.touched)" class="alert alert-danger mt-1">
+                                <input formControlName="newPassword" type="password" autocomplete="new-password"
+                                    class="form-control" placeholder="New password">
+                                <div *ngIf="newPassword.invalid && (newPassword.dirty || newPassword.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="newPassword.errors.required || newPassword.errors.notOnlyWhitespace">
                                         Password is required
                                     </div>
@@ -282,9 +305,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="repeatNewPassword">Repeat Password</label>
-                                <input formControlName="repeatNewPassword" type="password" autocomplete="new-password" class="form-control" placeholder="Repeat new password">
-                                <div *ngIf="repeatNewPassword.invalid && (repeatNewPassword.dirty || repeatNewPassword.touched)" class="alert alert-danger mt-1">
-                                    <div *ngIf="repeatNewPassword.errors.required || repeatNewPassword.errors.notOnlyWhitespace">
+                                <input formControlName="repeatNewPassword" type="password" autocomplete="new-password"
+                                    class="form-control" placeholder="Repeat new password">
+                                <div *ngIf="repeatNewPassword.invalid && (repeatNewPassword.dirty || repeatNewPassword.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div
+                                        *ngIf="repeatNewPassword.errors.required || repeatNewPassword.errors.notOnlyWhitespace">
                                         Password is required
                                     </div>
                                     <div *ngIf="repeatNewPassword.errors.notEquivalent">
@@ -298,7 +324,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="change-password-modal-close" >Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    id="change-password-modal-close">Close</button>
             </div>
         </div>
     </div>

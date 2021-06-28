@@ -27,7 +27,6 @@ export class HeaderComponent implements OnInit {
   }
 
   routeToLogin(): void {
-    console.log(this.router.url);
     this.router.navigate([`/login`], 
               {queryParams: {returnUrl: this.router.url}});
   }

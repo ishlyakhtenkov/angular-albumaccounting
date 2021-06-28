@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { ProfileService } from 'src/app/services/profile.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'src/app/validators/custom-validators';
+import { ErrorHandlingService } from 'src/app/services/error-handling.service';
+import { TestDataCheckingService } from 'src/app/services/test-data-checking.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +25,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(private profileService: ProfileService, private authenticationService: AuthenticationService, 
               private notificationService: NotificationService, private location: Location, private router: Router,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder, private errorHandlingService: ErrorHandlingService, 
+              private testDataCheckingService: TestDataCheckingService) { }
 
   ngOnInit(): void {
     this.handleUserProfile();
@@ -36,7 +39,7 @@ export class ProfileComponent implements OnInit {
         this.profile = response;
       },
       (errorResponse: HttpErrorResponse) => {
-        this.handleErrorResponse(errorResponse);
+        this.errorHandlingService.handleErrorResponse(errorResponse);
       }
     );
   }
@@ -48,24 +51,6 @@ export class ProfileComponent implements OnInit {
         repeatNewPassword: new FormControl('', [Validators.required])
       }, { validator: this.checkIfMatchingPasswords('newPassword', 'repeatNewPassword') })
     });
-  }
-
-  // Getters for changePasswordFormGroup values
-  get newPassword() {
-    return this.changePasswordFormGroup.get('changedPassword.newPassword');
-  }
-  get repeatNewPassword() {
-    return this.changePasswordFormGroup.get('changedPassword.repeatNewPassword');
-  }
-
-  logOut(): void {
-    this.authenticationService.logout();
-    this.notificationService.sendNotification(NotificationType.SUCCESS, 'You have been logged out');
-    this.router.navigateByUrl("/login");
-  }
-
-  back(): void {
-    this.location.back()
   }
 
   prepareChangePasswordFormGroup() {
@@ -97,9 +82,7 @@ export class ProfileComponent implements OnInit {
     if (this.changePasswordFormGroup.invalid) {
       this.changePasswordFormGroup.markAllAsTouched();
     } else {
-      if (+this.profile.id == 100000 || +this.profile.id == 100001) {
-        this.notificationService.sendNotification(NotificationType.ERROR, `Test profile password cannot be changed!`);
-      } else {
+      if (!this.testDataCheckingService.isTestUser(+this.profile.id, "Test profile password cannot be changed!")) {
         let newPassword = this.changePasswordFormGroup.get('changedPassword.newPassword').value;
         this.profileService.changePassword(newPassword).subscribe(
           response => {
@@ -107,23 +90,28 @@ export class ProfileComponent implements OnInit {
             this.notificationService.sendNotification(NotificationType.SUCCESS, `Password has been changed`);
           },
           (errorResponse: HttpErrorResponse) => {
-            if (errorResponse.status == 401 || errorResponse.status == 403) {
-              document.getElementById("change-password-modal-close").click();
-            }
-            this.handleErrorResponse(errorResponse);
+            this.errorHandlingService.handleErrorResponseWithButtonClick(errorResponse, "change-password-modal-close");
           }
         );
       }
     }
   }
 
-  private handleErrorResponse(errorResponse: HttpErrorResponse): void {
-    if (errorResponse.status == 401 || errorResponse.status == 403) {
-      this.authenticationService.logout();
-      this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
-      this.router.navigateByUrl("/login");
-    } else {
-      this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
-    }
+  logOut(): void {
+    this.authenticationService.logout();
+    this.notificationService.sendNotification(NotificationType.SUCCESS, 'You have been logged out');
+    this.router.navigateByUrl("/login");
+  }
+
+  back(): void {
+    this.location.back()
+  }
+
+  // Getters for changePasswordFormGroup values
+  get newPassword() {
+    return this.changePasswordFormGroup.get('changedPassword.newPassword');
+  }
+  get repeatNewPassword() {
+    return this.changePasswordFormGroup.get('changedPassword.repeatNewPassword');
   }
 }

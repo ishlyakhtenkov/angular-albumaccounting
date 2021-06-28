@@ -26,7 +26,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.authenticationService.isLoggedIn()) {
       this.router.navigateByUrl('/albums');
     } else {
-      // this.router.navigateByUrl('/login');
       this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
   }

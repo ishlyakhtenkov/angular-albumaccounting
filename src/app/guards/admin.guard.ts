@@ -21,12 +21,12 @@ export class AdminGuard implements CanActivate {
         return true;
       } else {
         this.router.navigateByUrl("/albums");
-        this.notificationService.notify(NotificationType.ERROR, 'You do not have enough permissions!');
+        this.notificationService.sendNotification(NotificationType.ERROR, 'You do not have enough permissions!');
         return false;
       }
     } else {
       this.router.navigate(['/login'], {queryParams: {'returnUrl': state.url}});
-      this.notificationService.notify(NotificationType.ERROR, 'You need to login to access this page');
+      this.notificationService.sendNotification(NotificationType.ERROR, 'You need to login to access this page');
       return false;
     }
   }

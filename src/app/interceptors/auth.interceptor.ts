@@ -17,13 +17,12 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private authenticationService: AuthenticationService) {}
 
   intercept(httpRequest: HttpRequest<unknown>, httpHandler: HttpHandler): Observable<HttpEvent<any>> {
-    if (httpRequest.url.includes(`${this.host}/api/profile/login`)) {
+    if (httpRequest.url.includes(`${this.host}/profile/login`)) {
       return httpHandler.handle(httpRequest);
     }
-    if (httpRequest.url.includes(`${this.host}/api/albums`) && httpRequest.method == 'GET') {
+    if (httpRequest.url.includes(`${this.host}/albums`) && httpRequest.method == 'GET') {
       return httpHandler.handle(httpRequest);
     }
-
     this.authenticationService.loadToken();
     const token = this.authenticationService.getToken();
     if (token) {

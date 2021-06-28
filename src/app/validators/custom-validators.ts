@@ -10,14 +10,4 @@ export class CustomValidators {
             return null;
         }
     }
-
-    static minOne(control: FormControl) : ValidationErrors {
-        // check if number >= 1
-        if (control.value != null && (control.value <= 0)) {
-            return { 'minOne': true };
-        } else {
-            return null;
-        }
-    }
 }
-

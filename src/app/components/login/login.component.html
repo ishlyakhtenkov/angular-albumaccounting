@@ -1,3 +1,4 @@
+<!-- Login Window -->
 <div class="container" style="margin-top: 100px;">
   <div class="d-flex justify-content-center h-50">
     <div class="user_card">
@@ -12,8 +13,8 @@
             <div class="input-group-append">
               <span class="input-group-text"><i class="fas fa-user"></i></span>
             </div>
-            <input type="text" autocomplete="username" class="form-control" name="userName" placeholder="Email" ngModel #usernameInput="ngModel"
-              required>
+            <input type="text" autocomplete="username" class="form-control" name="userName" placeholder="Email" ngModel
+              #usernameInput="ngModel" required>
           </div>
           <span class="help-block" style="color:red;" *ngIf="usernameInput.invalid && usernameInput.touched">Please
             enter an email</span>
@@ -21,8 +22,8 @@
             <div class="input-group-append">
               <span class="input-group-text"><i class="fas fa-key"></i></span>
             </div>
-            <input type="password" autocomplete="current-password" class="form-control" name="password" placeholder="Password" ngModel
-              #passwordInput="ngModel" required>
+            <input type="password" autocomplete="current-password" class="form-control" name="password"
+              placeholder="Password" ngModel #passwordInput="ngModel" required>
           </div>
           <span class="help-block" style="color:red;" *ngIf="passwordInput.invalid && passwordInput.touched">Please
             enter a password.</span>

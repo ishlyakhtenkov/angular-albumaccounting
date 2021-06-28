@@ -7,20 +7,24 @@
         <div class="col-8 text-right">
             <div class="btn-group">
                 <div class="form-inline">
-                    <input #inputHolderName id="inputHolderNameField" type="text" placeholder="Search by holder..." spellcheck="false" class="form-control mr-2"
+                    <input #inputHolderName id="inputHolderNameField" type="text" placeholder="Search by holder..."
+                        spellcheck="false" class="form-control mr-2"
                         (keyup.enter)="searchAlbumsByHolder(inputHolderName.value)">
                 </div>
                 <div class="form-inline">
-                    <input #inputDecimalNumber id="inputDecimalNumberField" type="text" placeholder="Search albums..." spellcheck="false" class="form-control"
+                    <input #inputDecimalNumber id="inputDecimalNumberField" type="text" placeholder="Search albums..."
+                        spellcheck="false" class="form-control"
                         (keyup.enter)="searchAlbumsByDecimal(inputDecimalNumber.value)">
                 </div>
-                <button [hidden]="!isLoggedIn()" (click)="makeAlbumAddFormGroup()" class="btn btn-info ml-2" data-toggle="modal" data-target="#addAlbumModal">
-                  <i class="fas fa-plus"></i> Add Album
+                <button [hidden]="!isLoggedIn()" (click)="makeAlbumAddFormGroup()" class="btn btn-info ml-2"
+                    data-toggle="modal" data-target="#addAlbumModal">
+                    <i class="fas fa-plus"></i> Add Album
                 </button>
             </div>
             <div class="btn-group">
                 <button type="button" (click)="refresh()" class="btn btn-light ml-2">
-                  <i *ngIf="refreshing" class="fas fa-sync fa-spin"></i><i *ngIf="!refreshing" class="fas fa-sync"></i>
+                    <i *ngIf="refreshing" class="fas fa-sync fa-spin"></i><i *ngIf="!refreshing"
+                        class="fas fa-sync"></i>
                 </button>
             </div>
         </div>
@@ -41,15 +45,18 @@
             <tr *ngFor="let tempAlbum of albums" align="center">
                 <td class="align-middle">{{ tempAlbum.decimalNumber }}</td>
                 <td class="align-middle">{{ tempAlbum.stamp }}</td>
-                <td  class="align-middle" [hidden]="!isLoggedIn()">{{ tempAlbum.location }}</td>
+                <td class="align-middle" [hidden]="!isLoggedIn()">{{ tempAlbum.location }}</td>
                 <td class="align-middle">{{ tempAlbum.holder.name }}</td>
                 <td class="align-middle">{{ tempAlbum.holder.department.name }}</td>
                 <td class="align-middle">{{ tempAlbum.holder.phoneNumber }}</td>
                 <td class="align-middle" [hidden]="!isLoggedIn()">
-                    <button (click)="prepareAlbumEditFormGroup(tempAlbum)" class="btn btn-outline-info btn-sm" title="Update Album" data-toggle="modal" data-target="#editAlbumModal">
+                    <button (click)="prepareAlbumEditFormGroup(tempAlbum)" class="btn btn-outline-info btn-sm"
+                        title="Update Album" data-toggle="modal" data-target="#editAlbumModal">
                         <i class="fa fa-pencil-alt" aria-hidden="true"></i>
-                    </button>      
-                    <button (click)="deleteAlbum(tempAlbum.id, tempAlbum.decimalNumber)" class="btn btn-outline-danger btn-sm ml-1" title="Delete Album"><i class="fas fa-trash" aria-hidden="true"></i></button>     
+                    </button>
+                    <button (click)="deleteAlbum(tempAlbum.id, tempAlbum.decimalNumber)"
+                        class="btn btn-outline-danger btn-sm ml-1" title="Delete Album"><i class="fas fa-trash"
+                            aria-hidden="true"></i></button>
                 </td>
             </tr>
         </tbody>
@@ -62,26 +69,21 @@
         </div>
     </div>
 
-    <!-- pagiantion -->
+    <!-- Pagination Area -->
     <div class="footer-pagination">
         <div class="row mt-3">
             <div class="col-md-4"></div>
             <div class="col-md-8">
                 <div class="row">
                     <div class="col-md-9" style="padding-left: 30%">
-                        <ngb-pagination [(page)]="pageNumber" 
-                                        [pageSize]="pageSize" 
-                                        [collectionSize]="totalElements"
-                                        [maxSize]="5"
-                                        [boundaryLinks]="false"
-                                        (pageChange)="getAlbumsPage()">
+                        <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize" [collectionSize]="totalElements"
+                            [maxSize]="5" [boundaryLinks]="false" (pageChange)="getAlbumsPage()">
                         </ngb-pagination>
                     </div>
 
                     <div class="col-md-3 mt-2 text-right">
                         <span class="mr-2">Page Size</span>
                         <select (change)="updatePageSize($event.target.value)">
-                            <option>1</option>
                             <option selected="true">5</option>
                             <option>10</option>
                             <option>20</option>
@@ -95,8 +97,8 @@
 </div>
 
 <!-- Album Add Modal Form -->
-<div *ngIf="isLoggedIn()" class="modal draggable fade bd-example-modal-lg" id="addAlbumModal" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div *ngIf="isLoggedIn()" class="modal draggable fade bd-example-modal-lg" id="addAlbumModal" tabindex="-1"
+    role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -111,9 +113,12 @@
                         <div formGroupName="album" class="text-left">
                             <div class="form-group">
                                 <label for="decimalNumber">Album Decimal Number</label>
-                                <input formControlName="decimalNumber" type="text" class="form-control" placeholder="Album Decimal Number">
-                                <div *ngIf="decimalNumber.invalid && (decimalNumber.dirty || decimalNumber.touched)" class="alert alert-danger mt-1">
-                                    <div *ngIf="decimalNumber.errors.required || decimalNumber.errors.notOnlyWhitespace">
+                                <input formControlName="decimalNumber" type="text" class="form-control"
+                                    placeholder="Album Decimal Number">
+                                <div *ngIf="decimalNumber.invalid && (decimalNumber.dirty || decimalNumber.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div
+                                        *ngIf="decimalNumber.errors.required || decimalNumber.errors.notOnlyWhitespace">
                                         Decimal Number is required
                                     </div>
                                     <div *ngIf="decimalNumber.errors.minlength">
@@ -132,7 +137,8 @@
                                     <option value="II_STAMP">II Stamp</option>
                                     <option value="V_STAMP">V Stamp</option>
                                 </select>
-                                <div *ngIf="stamp.invalid && (stamp.dirty || stamp.touched)" class="alert alert-danger mt-1">
+                                <div *ngIf="stamp.invalid && (stamp.dirty || stamp.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="stamp.errors.required">
                                         Stamp is required
                                     </div>
@@ -140,13 +146,15 @@
                             </div>
                             <div class="form-group">
                                 <label for="department">Album Holder Department</label>
-                                <select formControlName="department" class="form-control" (change)="getEmployees('albumAddFormGroup')">
+                                <select formControlName="department" class="form-control"
+                                    (change)="getEmployees('albumAddFormGroup')">
                                     <option value="" selected disabled hidden>Album Holder Department</option>
                                     <option *ngFor="let department of departments" [ngValue]="department">
                                         {{ department.name }}
                                     </option>
                                 </select>
-                                <div *ngIf="department.invalid && (department.dirty || department.touched)" class="alert alert-danger mt-1">
+                                <div *ngIf="department.invalid && (department.dirty || department.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="department.errors.required">
                                         Department is required
                                     </div>
@@ -160,7 +168,8 @@
                                         {{ employee.name }}
                                     </option>
                                 </select>
-                                <div *ngIf="holder.invalid && (holder.dirty || holder.touched)" class="alert alert-danger mt-1">
+                                <div *ngIf="holder.invalid && (holder.dirty || holder.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="holder.errors.required">
                                         Holder is required
                                     </div>
@@ -172,15 +181,16 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="album-add-modal-close" >Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    id="album-add-modal-close">Close</button>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Album Edit Modal Form -->
-<div *ngIf="isLoggedIn()" class="modal draggable fade bd-example-modal-lg" id="editAlbumModal" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div *ngIf="isLoggedIn()" class="modal draggable fade bd-example-modal-lg" id="editAlbumModal" tabindex="-1"
+    role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -195,9 +205,12 @@
                         <div formGroupName="album" class="text-left">
                             <div class="form-group">
                                 <label for="decimalNumberEdited">Album Decimal Number</label>
-                                <input formControlName="decimalNumberEdited" type="text" class="form-control" placeholder="Album Decimal Number">
-                                <div *ngIf="decimalNumberEdited.invalid && (decimalNumberEdited.dirty || decimalNumberEdited.touched)" class="alert alert-danger mt-1">
-                                    <div *ngIf="decimalNumberEdited.errors.required || decimalNumberEdited.errors.notOnlyWhitespace">
+                                <input formControlName="decimalNumberEdited" type="text" class="form-control"
+                                    placeholder="Album Decimal Number">
+                                <div *ngIf="decimalNumberEdited.invalid && (decimalNumberEdited.dirty || decimalNumberEdited.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div
+                                        *ngIf="decimalNumberEdited.errors.required || decimalNumberEdited.errors.notOnlyWhitespace">
                                         Decimal Number is required
                                     </div>
                                     <div *ngIf="decimalNumberEdited.errors.minlength">
@@ -216,7 +229,8 @@
                                     <option value="II_STAMP">II Stamp</option>
                                     <option value="V_STAMP">V Stamp</option>
                                 </select>
-                                <div *ngIf="stampEdited.invalid && (stampEdited.dirty || stampEdited.touched)" class="alert alert-danger mt-1">
+                                <div *ngIf="stampEdited.invalid && (stampEdited.dirty || stampEdited.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="stampEdited.errors.required">
                                         Stamp is required
                                     </div>
@@ -224,13 +238,15 @@
                             </div>
                             <div class="form-group">
                                 <label for="department">Album Holder Department</label>
-                                <select formControlName="departmentEdited" class="form-control" (change)="getEmployees('albumEditFormGroup')">
+                                <select formControlName="departmentEdited" class="form-control"
+                                    (change)="getEmployees('albumEditFormGroup')">
                                     <option value="" selected disabled hidden>Album Holder Department</option>
                                     <option *ngFor="let department of departments" [ngValue]="department">
                                         {{ department.name }}
                                     </option>
                                 </select>
-                                <div *ngIf="departmentEdited.invalid && (departmentEdited.dirty || departmentEdited.touched)" class="alert alert-danger mt-1">
+                                <div *ngIf="departmentEdited.invalid && (departmentEdited.dirty || departmentEdited.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="departmentEdited.errors.required">
                                         Department is required
                                     </div>
@@ -244,7 +260,8 @@
                                         {{ employee.name }}
                                     </option>
                                 </select>
-                                <div *ngIf="holderEdited.invalid && (holderEdited.dirty || holderEdited.touched)" class="alert alert-danger mt-1">
+                                <div *ngIf="holderEdited.invalid && (holderEdited.dirty || holderEdited.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="holderEdited.errors.required">
                                         Holder is required
                                     </div>
@@ -256,7 +273,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="album-edit-modal-close" >Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    id="album-edit-modal-close">Close</button>
             </div>
         </div>
     </div>

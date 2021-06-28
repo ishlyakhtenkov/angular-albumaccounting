@@ -1,11 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Department } from 'src/app/common/department';
 import { NotificationType } from 'src/app/enums/notification-type.enum';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 import { DepartmentService } from 'src/app/services/department.service';
+import { ErrorHandlingService } from 'src/app/services/error-handling.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { CustomValidators } from 'src/app/validators/custom-validators';
 
@@ -19,14 +18,13 @@ export class DepartmentComponent implements OnInit {
   departments: Department[];
 
   departmentAddFormGroup: FormGroup;
-
   departmentEditFormGroup: FormGroup;
   editedDepartmentName: string;
 
   refreshing: boolean;
 
-  constructor(private departmentService: DepartmentService, private notificationService: NotificationService, 
-    private formBuilder: FormBuilder, private authenticationService: AuthenticationService, private router: Router) { }
+  constructor(private departmentService: DepartmentService, private notificationService: NotificationService,
+    private formBuilder: FormBuilder, private errorHandlingService: ErrorHandlingService) { }
 
   ngOnInit(): void {
     this.listDepartments();
@@ -42,7 +40,7 @@ export class DepartmentComponent implements OnInit {
         this.refreshing = false;
       },
       (errorResponse: HttpErrorResponse) => {
-        this.handleErrorResponse(errorResponse);
+        this.errorHandlingService.handleErrorResponse(errorResponse);
         this.refreshing = false;
       }
     );
@@ -65,25 +63,12 @@ export class DepartmentComponent implements OnInit {
     });
   }
 
-  // Getters for departmentAddFormGroup values
-  get name() {
-    return this.departmentAddFormGroup.get('department.name');
-  }
-
-  // Getters for departmentEditFormGroup values
-  get id() {
-    return this.departmentEditFormGroup.get('department.id');
-  }
-  get nameEdited() {
-    return this.departmentEditFormGroup.get('department.nameEdited');
-  }
-
-  // Submit Add User From
+  // Submit Add Department From
   onAddNewDepartment() {
     if (this.departmentAddFormGroup.invalid) {
       this.departmentAddFormGroup.markAllAsTouched();
     } else {
-      let newDepartment = new Department(null, this.departmentAddFormGroup.get('department.name').value);
+      let newDepartment = new Department(null, this.name.value);
       this.departmentService.createDepartment(newDepartment).subscribe(
         (response: Department) => {
           document.getElementById("department-add-modal-close").click();
@@ -91,10 +76,7 @@ export class DepartmentComponent implements OnInit {
           this.listDepartments();
         },
         (errorResponse: HttpErrorResponse) => {
-          if (errorResponse.status == 401 || errorResponse.status == 403) {
-            document.getElementById("department-add-modal-close").click();
-          }
-          this.handleErrorResponse(errorResponse);
+          this.errorHandlingService.handleErrorResponseWithButtonClick(errorResponse, "department-add-modal-close");
         }
       );
     }
@@ -123,10 +105,7 @@ export class DepartmentComponent implements OnInit {
           this.listDepartments();
         },
         (errorResponse: HttpErrorResponse) => {
-          if (errorResponse.status == 401 || errorResponse.status == 403) {
-            document.getElementById("department-edit-modal-close").click();
-          }
-          this.handleErrorResponse(errorResponse);
+          this.errorHandlingService.handleErrorResponseWithButtonClick(errorResponse, "department-edit-modal-close");
         }
       );
     }
@@ -140,19 +119,22 @@ export class DepartmentComponent implements OnInit {
           this.listDepartments();
         },
         (errorResponse: HttpErrorResponse) => {
-          this.handleErrorResponse(errorResponse);
+          this.errorHandlingService.handleErrorResponse(errorResponse);
         }
       );
     }
   }
-  
-  private handleErrorResponse(errorResponse: HttpErrorResponse): void {
-    if (errorResponse.status == 401 || errorResponse.status == 403) {
-      this.authenticationService.logout();
-      this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
-      this.router.navigateByUrl("/login");
-    } else {
-      this.notificationService.sendNotifications(NotificationType.ERROR, errorResponse.error.details);
-    }
+
+  // Getters for departmentAddFormGroup values
+  get name() {
+    return this.departmentAddFormGroup.get('department.name');
+  }
+
+  // Getters for departmentEditFormGroup values
+  get id() {
+    return this.departmentEditFormGroup.get('department.id');
+  }
+  get nameEdited() {
+    return this.departmentEditFormGroup.get('department.nameEdited');
   }
 }

@@ -6,13 +6,15 @@
         </div>
         <div class="col-6 text-right">
             <div class="btn-group">
-                <button type="button" (click)="makeDepartmentAddFormGroup()" class="btn btn-info mr-2" data-toggle="modal" data-target="#addDepartmentModal">
-                  <i class="fas fa-plus"></i> Add Department
+                <button type="button" (click)="makeDepartmentAddFormGroup()" class="btn btn-info mr-2"
+                    data-toggle="modal" data-target="#addDepartmentModal">
+                    <i class="fas fa-plus"></i> Add Department
                 </button>
             </div>
             <div class="btn-group">
                 <button type="button" (click)="listDepartments()" class="btn btn-light">
-                  <i *ngIf="refreshing" class="fas fa-sync fa-spin"></i><i *ngIf="!refreshing" class="fas fa-sync"></i>
+                    <i *ngIf="refreshing" class="fas fa-sync fa-spin"></i><i *ngIf="!refreshing"
+                        class="fas fa-sync"></i>
                 </button>
             </div>
         </div>
@@ -28,10 +30,13 @@
             <tr *ngFor="let tempDepartment of departments" align="center">
                 <td class="align-middle">{{ tempDepartment.name }}</td>
                 <td class="align-middle">
-                    <button (click)="prepareDepartmentEditFormGroup(tempDepartment)" class="btn btn-outline-info btn-sm" title="Update Department" data-toggle="modal" data-target="#editDepartmentModal">
+                    <button (click)="prepareDepartmentEditFormGroup(tempDepartment)" class="btn btn-outline-info btn-sm"
+                        title="Update Department" data-toggle="modal" data-target="#editDepartmentModal">
                         <i class="fa fa-pencil-alt" aria-hidden="true"></i>
-                    </button>      
-                    <button (click)="deleteDepartment(tempDepartment.id, tempDepartment.name)" class="btn btn-outline-danger btn-sm ml-1" title="Delete Department"><i class="fas fa-trash" aria-hidden="true"></i></button>     
+                    </button>
+                    <button (click)="deleteDepartment(tempDepartment.id, tempDepartment.name)"
+                        class="btn btn-outline-danger btn-sm ml-1" title="Delete Department"><i class="fas fa-trash"
+                            aria-hidden="true"></i></button>
                 </td>
             </tr>
         </tbody>
@@ -62,8 +67,10 @@
                         <div formGroupName="department" class="text-left">
                             <div class="form-group">
                                 <label for="name">Department Name</label>
-                                <input formControlName="name" type="text" class="form-control" placeholder="Department name">
-                                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger mt-1">
+                                <input formControlName="name" type="text" class="form-control"
+                                    placeholder="Department name">
+                                <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="name.errors.required || name.errors.notOnlyWhitespace">
                                         Name is required
                                     </div>
@@ -81,7 +88,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="department-add-modal-close" >Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    id="department-add-modal-close">Close</button>
             </div>
         </div>
     </div>
@@ -107,8 +115,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="nameEdited">Department Name</label>
-                                <input formControlName="nameEdited" type="text" class="form-control" placeholder="Department name">
-                                <div *ngIf="nameEdited.invalid && (nameEdited.dirty || nameEdited.touched)" class="alert alert-danger mt-1">
+                                <input formControlName="nameEdited" type="text" class="form-control"
+                                    placeholder="Department name">
+                                <div *ngIf="nameEdited.invalid && (nameEdited.dirty || nameEdited.touched)"
+                                    class="alert alert-danger mt-1">
                                     <div *ngIf="nameEdited.errors.required || nameEdited.errors.notOnlyWhitespace">
                                         Name is required
                                     </div>
@@ -126,7 +136,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="department-edit-modal-close" >Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    id="department-edit-modal-close">Close</button>
             </div>
         </div>
     </div>

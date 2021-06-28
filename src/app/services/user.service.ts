@@ -14,10 +14,6 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getUser(id: number): Observable<User>{
-    return this.httpClient.get<User>(`${this.usersUrl}/${id}`);
-  }
-
   getUserList(): Observable<User[]> {
     return this.httpClient.get<User[]>(this.usersUrl);
   }
@@ -36,11 +32,6 @@ export class UserService {
 
   deleteUser(id: number): Observable<any> {
     return this.httpClient.delete<any>(`${this.usersUrl}/${id}`);
-  }
-
-  enableUser(id: number, enabled: boolean): Observable<any> {
-    const enabledQueryParam = `?enabled=${enabled}`;
-    return this.httpClient.patch<any>(`${this.usersUrl}/${id}${enabledQueryParam}`, {});
   }
 
   changeUserPassword(id: number, newPassword: string): Observable<any> {
