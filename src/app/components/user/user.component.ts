@@ -70,6 +70,11 @@ export class UserComponent implements OnInit {
     }
   }
 
+  refresh() {
+    (<HTMLInputElement>document.getElementById("inputkeyWordField")).value = '';
+    this.listUsers();
+  }
+
   makeUserAddFormGroup() {
     this.userAddFormGroup = this.formBuilder.group({
       user: this.formBuilder.group({
