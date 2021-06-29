@@ -1,6 +1,8 @@
+import { formatDate } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { Album } from 'src/app/common/album';
 import { AlbumTo } from 'src/app/common/album-to';
 import { Department } from 'src/app/common/department';
@@ -159,6 +161,7 @@ export class AlbumComponent implements OnInit {
       album: this.formBuilder.group({
         decimalNumber: new FormControl('', [Validators.required, Validators.minLength(12), Validators.maxLength(30), CustomValidators.notOnlyWhitespace]),
         stamp: new FormControl('', [Validators.required]),
+        receivingDate: new FormControl(formatDate(new Date(), 'yyyy-MM-dd', 'en-US'), [Validators.required]),
         department: new FormControl('', [Validators.required]),
         holder: new FormControl('', [Validators.required])
       })
@@ -171,6 +174,7 @@ export class AlbumComponent implements OnInit {
         id: [''],
         decimalNumberEdited: new FormControl('', [Validators.required, Validators.minLength(12), Validators.maxLength(30), CustomValidators.notOnlyWhitespace]),
         stampEdited: new FormControl('', [Validators.required]),
+        receivingDateEdited: new FormControl('', [Validators.required]),
         departmentEdited: new FormControl('', [Validators.required]),
         holderEdited: new FormControl('', [Validators.required])
       })
@@ -227,7 +231,7 @@ export class AlbumComponent implements OnInit {
     if (this.albumAddFormGroup.invalid) {
       this.albumAddFormGroup.markAllAsTouched();
     } else {
-      let newAlbumTo = new AlbumTo(null, this.decimalNumber.value, this.stamp.value, this.holder.value.id);
+      let newAlbumTo = new AlbumTo(null, this.decimalNumber.value, this.stamp.value, this.receivingDate.value, this.holder.value.id);
       this.albumService.createAlbum(newAlbumTo).subscribe(
         (response: Album) => {
           document.getElementById("album-add-modal-close").click();
@@ -250,12 +254,12 @@ export class AlbumComponent implements OnInit {
         this.employeeService.getEmployeeList(+departmentId).subscribe(
           (response: Employee[]) => {
             this.employees = response;
-            this.fillDepartmentAndHolderAlbumEditFormFields(album);
+            this.fillAlbumEditFormFields(album);
           },
           (errorResponse: HttpErrorResponse) => {
             this.employees = null;
             this.errorHandlingService.handleErrorResponse(errorResponse);
-            this.fillDepartmentAndHolderAlbumEditFormFields(album);
+            this.fillAlbumEditFormFields(album);
           }
         );
       },
@@ -266,7 +270,7 @@ export class AlbumComponent implements OnInit {
     );
   }
 
-  private fillDepartmentAndHolderAlbumEditFormFields(album: Album) {
+  private fillAlbumEditFormFields(album: Album) {
     // get indexes of department from departments array and holder from employees for use this department in FormControl
     let departmentIndex = this.departments.findIndex(tempDepartment => tempDepartment.name === album.holder.department.name);
     let holderIndex = this.employees.findIndex(tempEmployee => tempEmployee.name === album.holder.name);
@@ -276,6 +280,7 @@ export class AlbumComponent implements OnInit {
         id: [album.id],
         decimalNumberEdited: new FormControl(album.decimalNumber, [Validators.required, Validators.minLength(12), Validators.maxLength(30), CustomValidators.notOnlyWhitespace]),
         stampEdited: new FormControl(album.stamp, [Validators.required]),
+        receivingDateEdited: new FormControl(album.receivingDate, [Validators.required]),
         departmentEdited: new FormControl(this.departments[departmentIndex], [Validators.required]),
         holderEdited: new FormControl(this.employees[holderIndex], [Validators.required])
       })
@@ -287,7 +292,7 @@ export class AlbumComponent implements OnInit {
     if (this.albumEditFormGroup.invalid) {
       this.albumEditFormGroup.markAllAsTouched();
     } else {
-      let updatedAlbumTo = new AlbumTo(this.id.value, this.decimalNumberEdited.value, this.stampEdited.value, this.holderEdited.value.id);
+      let updatedAlbumTo = new AlbumTo(this.id.value, this.decimalNumberEdited.value, this.stampEdited.value, this.receivingDateEdited.value, this.holderEdited.value.id);
       this.albumService.updateAlbum(updatedAlbumTo).subscribe(
         response => {
           document.getElementById("album-edit-modal-close").click();
@@ -332,6 +337,9 @@ export class AlbumComponent implements OnInit {
   get stamp() {
     return this.albumAddFormGroup.get('album.stamp');
   }
+  get receivingDate() {
+    return this.albumAddFormGroup.get('album.receivingDate');
+  }
   get department() {
     return this.albumAddFormGroup.get('album.department');
   }
@@ -348,6 +356,9 @@ export class AlbumComponent implements OnInit {
   }
   get stampEdited() {
     return this.albumEditFormGroup.get('album.stampEdited');
+  }
+  get receivingDateEdited() {
+    return this.albumEditFormGroup.get('album.receivingDateEdited');
   }
   get departmentEdited() {
     return this.albumEditFormGroup.get('album.departmentEdited');

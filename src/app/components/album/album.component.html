@@ -38,6 +38,7 @@
                 <th>Holder</th>
                 <th>Department</th>
                 <th>Phone Number</th>
+                <th>Receiving Date</th>
                 <th [hidden]="!isLoggedIn()">Actions</th>
             </tr>
         </thead>
@@ -49,6 +50,7 @@
                 <td class="align-middle">{{ tempAlbum.holder.name }}</td>
                 <td class="align-middle">{{ tempAlbum.holder.department.name }}</td>
                 <td class="align-middle">{{ tempAlbum.holder.phoneNumber }}</td>
+                <td class="align-middle">{{ tempAlbum.receivingDate }}</td>
                 <td class="align-middle" [hidden]="!isLoggedIn()">
                     <button (click)="prepareAlbumEditFormGroup(tempAlbum)" class="btn btn-outline-info btn-sm"
                         title="Update Album" data-toggle="modal" data-target="#editAlbumModal">
@@ -175,6 +177,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="receivingDate">Album Receiving Date</label>
+                                <input formControlName="receivingDate" type="date" class="form-control"
+                                    placeholder="Album Receiving Date">
+                                <div *ngIf="receivingDate.invalid && (receivingDate.dirty || receivingDate.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div
+                                        *ngIf="receivingDate.errors.required">
+                                        Receiving Date is required
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-info btn-block">Save</button>
                     </form>
@@ -264,6 +278,18 @@
                                     class="alert alert-danger mt-1">
                                     <div *ngIf="holderEdited.errors.required">
                                         Holder is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="receivingDateEdited">Album Receiving Date</label>
+                                <input formControlName="receivingDateEdited" type="date" class="form-control"
+                                    placeholder="Album Receiving Date">
+                                <div *ngIf="receivingDateEdited.invalid && (receivingDateEdited.dirty || receivingDateEdited.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div
+                                        *ngIf="receivingDateEdited.errors.required">
+                                        Receiving Date is required
                                     </div>
                                 </div>
                             </div>
