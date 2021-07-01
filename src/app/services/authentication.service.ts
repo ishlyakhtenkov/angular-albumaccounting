@@ -25,25 +25,25 @@ export class AuthenticationService {
   logout(): void {
     this.token = null;
     this.loggedInUserEmail = null;
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    localStorage.removeItem('album-accounting-user');
+    localStorage.removeItem('album-accounting-token');
   }
 
   saveToken(token: string): void {
     this.token = token;
-    localStorage.setItem('token', token);
+    localStorage.setItem('album-accounting-token', token);
   }
 
   addUserToLocalCache(user: User): void {
-    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('album-accounting-user', JSON.stringify(user));
   }
 
   getUserFromLocalCache(): User {
-    return JSON.parse(localStorage.getItem('user'));
+    return JSON.parse(localStorage.getItem('album-accounting-user'));
   }
 
   loadToken(): void {
-    this.token = localStorage.getItem('token');
+    this.token = localStorage.getItem('album-accounting-token');
   }
 
   getToken(): string {

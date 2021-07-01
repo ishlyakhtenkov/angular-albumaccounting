@@ -20,7 +20,7 @@ export class EmployeeComponent implements OnInit {
 
   departments: Department[] = [];
   selectedDepartment: Department = null;
-  employees: Employee[];
+  employees: Employee[] = [];
 
   employeeAddFormGroup: FormGroup;
   employeeEditFormGroup: FormGroup;
@@ -45,6 +45,8 @@ export class EmployeeComponent implements OnInit {
         this.selectDepartment();
         if (this.selectedDepartment != null) {
           this.listEmployees();
+        } else {
+          this.refreshing = false;
         }
       },
       (errorResponse: HttpErrorResponse) => {
@@ -87,7 +89,7 @@ export class EmployeeComponent implements OnInit {
       employee: this.formBuilder.group({
         name: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(20), CustomValidators.notOnlyWhitespace]),
         phoneNumber: new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(20), CustomValidators.notOnlyWhitespace]),
-        department: new FormControl(this.selectedDepartment, [Validators.required])
+        department: new FormControl((this.selectedDepartment != null) ? this.selectedDepartment : '', [Validators.required])
       })
     });
   }
