@@ -50,6 +50,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     );
   }
 
+  loginAsAdmin(): void {
+    this.onLogin('admin@gmail.com', 'admin');
+  }
+
+  loginAsUser(): void {
+    this.onLogin('user@yandex.ru', 'password');
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());   
   }

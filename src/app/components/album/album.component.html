@@ -1,10 +1,10 @@
 <!-- Albums Table -->
 <div class="container mt-2">
-    <div class="row mt-2">
-        <div class="col-4">
+    <div class="row row-cols-1 row-cols-xl-2 mt-2">
+        <div class="col-12 col-xl-4">
             <h2 class="text-secondary font-weight-bold">Albums</h2>
         </div>
-        <div class="col-8 text-right">
+        <div class="col-12 col-xl-8 text-right">
             <div class="btn-group">
                 <div class="form-inline">
                     <input #inputHolderName id="inputHolderNameField" type="text" placeholder="Search by holder..."
@@ -16,53 +16,65 @@
                         spellcheck="false" class="form-control"
                         (keyup.enter)="searchAlbumsByDecimal(inputDecimalNumber.value)">
                 </div>
-                <button [hidden]="!isLoggedIn()" (click)="makeAlbumAddFormGroup()" class="btn btn-info ml-2"
+                <button [hidden]="!isLoggedIn()" (click)="makeAlbumAddFormGroup()" class="btn btn-info ml-2 d-none d-xl-block"
                     data-toggle="modal" data-target="#addAlbumModal">
                     <i class="fas fa-plus"></i> Add Album
                 </button>
             </div>
             <div class="btn-group">
-                <button type="button" (click)="refresh()" class="btn btn-light ml-2">
+                <button type="button" (click)="refresh()" class="btn btn-light ml-2  d-none d-xl-block">
                     <i *ngIf="refreshing" class="fas fa-sync fa-spin"></i><i *ngIf="!refreshing"
                         class="fas fa-sync"></i>
                 </button>
             </div>
         </div>
+        <div class="col-12 d-xl-none mt-2 mb-2 text-right">
+            <button [hidden]="!isLoggedIn()" (click)="makeAlbumAddFormGroup()" class="btn btn-info ml-2"
+                data-toggle="modal" data-target="#addAlbumModal">
+                <i class="fas fa-plus"></i> Add Album
+            </button>
+            <button type="button" (click)="refresh()" class="btn btn-light ml-2">
+                <i *ngIf="refreshing" class="fas fa-sync fa-spin"></i><i *ngIf="!refreshing"
+                    class="fas fa-sync"></i>
+            </button>
+        </div>
     </div>
-    <table *ngIf="albums?.length > 0" class="table">
-        <thead class="thead-dark">
-            <tr align="center">
-                <th>Decimal Number</th>
-                <th>Stamp</th>
-                <th [hidden]="!isLoggedIn()">Location</th>
-                <th>Holder</th>
-                <th>Department</th>
-                <th>Phone Number</th>
-                <th>Receiving Date</th>
-                <th [hidden]="!isLoggedIn()">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let tempAlbum of albums" align="center">
-                <td class="align-middle">{{ tempAlbum.decimalNumber }}</td>
-                <td class="align-middle">{{ tempAlbum.stamp }}</td>
-                <td class="align-middle" [hidden]="!isLoggedIn()">{{ tempAlbum.location }}</td>
-                <td class="align-middle">{{ tempAlbum.holder.name }}</td>
-                <td class="align-middle">{{ tempAlbum.holder.department.name }}</td>
-                <td class="align-middle">{{ tempAlbum.holder.phoneNumber }}</td>
-                <td class="align-middle">{{ tempAlbum.receivingDate }}</td>
-                <td class="align-middle" [hidden]="!isLoggedIn()">
-                    <button (click)="prepareAlbumEditFormGroup(tempAlbum)" class="btn btn-outline-info btn-sm"
-                        title="Update Album" data-toggle="modal" data-target="#editAlbumModal">
-                        <i class="fa fa-pencil-alt" aria-hidden="true"></i>
-                    </button>
-                    <button (click)="deleteAlbum(tempAlbum.id, tempAlbum.decimalNumber)"
-                        class="btn btn-outline-danger btn-sm ml-1" title="Delete Album"><i class="fas fa-trash"
-                            aria-hidden="true"></i></button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table *ngIf="albums?.length > 0" class="table">
+            <thead class="thead-dark">
+                <tr align="center">
+                    <th class="align-middle">Decimal Number</th>
+                    <th class="align-middle">Stamp</th>
+                    <th class="align-middle" [hidden]="!isLoggedIn()">Location</th>
+                    <th class="align-middle">Holder</th>
+                    <th class="align-middle">Department</th>
+                    <th class="align-middle">Phone Number</th>
+                    <th class="align-middle">Receiving Date</th>
+                    <th class="align-middle" [hidden]="!isLoggedIn()">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let tempAlbum of albums" align="center">
+                    <td class="align-middle text-nowrap">{{ tempAlbum.decimalNumber }}</td>
+                    <td class="align-middle text-nowrap">{{ tempAlbum.stamp }}</td>
+                    <td class="align-middle text-nowrap" [hidden]="!isLoggedIn()">{{ tempAlbum.location }}</td>
+                    <td class="align-middle text-nowrap">{{ tempAlbum.holder.name }}</td>
+                    <td class="align-middle text-nowrap">{{ tempAlbum.holder.department.name }}</td>
+                    <td class="align-middle text-nowrap">{{ tempAlbum.holder.phoneNumber }}</td>
+                    <td class="align-middle text-nowrap">{{ tempAlbum.receivingDate }}</td>
+                    <td class="align-middle text-nowrap" [hidden]="!isLoggedIn()">
+                        <button (click)="prepareAlbumEditFormGroup(tempAlbum)" class="btn btn-outline-info btn-sm"
+                            title="Update Album" data-toggle="modal" data-target="#editAlbumModal">
+                            <i class="fa fa-pencil-alt" aria-hidden="true"></i>
+                        </button>
+                        <button (click)="deleteAlbum(tempAlbum.id, tempAlbum.decimalNumber)"
+                            class="btn btn-outline-danger btn-sm ml-1" title="Delete Album"><i class="fas fa-trash"
+                                aria-hidden="true"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <!-- if albums is empty then display a message -->
     <div *ngIf="albums?.length == 0" class="container">
@@ -73,11 +85,11 @@
 
     <!-- Pagination Area -->
     <div class="footer-pagination">
-        <div class="row mt-3">
-            <div class="col-md-4"></div>
-            <div class="col-md-8">
+        <div class="row mt-3 mb-3">
+            <div class="col-xl-4"></div>
+            <div class="col-xl-8">
                 <div class="row">
-                    <div class="col-md-9" style="padding-left: 30%">
+                    <div id="paginationRow" class="col-md-9">
                         <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize" [collectionSize]="totalElements"
                             [maxSize]="5" [boundaryLinks]="false" (pageChange)="getAlbumsPage()">
                         </ngb-pagination>
