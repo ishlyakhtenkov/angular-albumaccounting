@@ -51,7 +51,9 @@ const routes: Routes = [
     EmployeeComponent
   ],
   imports: [
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: 'enabled'
+    }),
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
